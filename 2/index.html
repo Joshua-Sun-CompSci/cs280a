@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS280A Project 2: Fun with Filters and Frequencies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .image-box {
+            flex: 1 1 300px;
+            max-width: 45%;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .subsection {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .note {
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CS280A Project 2: Fun with Filters and Frequencies</h1>
+
+    <!-- PART 1 -->
+    <div class="section" id="part1">
+        <h2>Part 1: Filters and Edges</h2>
+
+        <!-- 1.1 Convolutions from Scratch -->
+        <div class="subsection" id="part1-1">
+            <h3>1.1 Convolutions from Scratch</h3>
+            <p>In this part, I implemented 2D convolution with numpy using zero-padding. Compared with <code>scipy.signal.convolve2d</code>, my version does the job equally good, and with a almost-equal runtime. You can see the UC Davis logo on my shirt. GO AGGIES... and bears</p>
+            <pre><code>
+# code snippet
+def convolution(image, kernel):
+    image_height, image_width = image.shape
+    kernel_height, kernel_width = kernel.shape
+    pad_height = kernel_height // 2
+    pad_width = kernel_width // 2
+
+    # zero pad both top/bottom and left/right of the image
+    padded_image = np.pad(image, ((pad_height, pad_height), (pad_width, pad_width)), mode='constant')
+    output = np.zeros((image_height, image_width))
+
+    for i in range(image_height):
+        for j in range(image_width):
+            output[i, j] = np.sum(padded_image[i:i+kernel_height, j:j+kernel_width] * kernel)
+    return output
+            </code></pre>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="1_1.png" alt="Section 1.1">
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.2 Finite Difference Operator -->
+        <div class="subsection" id="part1-2">
+            <h3>1.2 Finite Difference Operator</h3>
+            <p>Here, I computed partial derivatives in x and y, gradient magnitude, and binarized edge image with a threshold of 0.3. It is a sweet spot I found out after multiple trials, where it can retain edges while suppress noises.</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="1_2.png" alt="Section 1.2">
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.3 Derivative of Gaussian -->
+        <div class="subsection" id="part1-3">
+            <h3>1.3 Derivative of Gaussian (DoG) Filter</h3>
+            <p>In this section, I applied Gaussian smoothing and derivative-of-Gaussian filters. Comparing results with the last part, we can immediately see that more noise get suppressed (the dots at the bottom disappeared), making it easier to show real edges. Using a single convolution instead of 2 gave us the same result, proving that convolution is associative. For the bells & whistles, I calculated the gradient orientation by calculating the arctan value of d_y/d_x with normalization, resulting in a very interesting picture as shown below.</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="1_3.png" alt="Section 1.3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="section" id="part2">
+        <h2>Part 2: Applications</h2>
+
+        <!-- 2.1 Image Sharpening -->
+        <div class="subsection" id="part2-1">
+            <h3>2.1 Image Sharpening (Unsharp Mask)</h3>
+            <p>In 2.1, I implemented the unsharp mask. To get the mask, a blurred image is subtracted from the original image to get the high frequencies, then the high frequency is added to the image to make it look sharper. I did it with a single convolution using the equation unsharp = (1+a)e-ag. As shown below, the higher the alpha, the sharper the image looks. If we blur the image first, unsharping looks "softer" as we remove some high frequencies during the blurring action.</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="2_1.png" alt="Section 2.1">
+                </div>
+            </div>
+        </div>
+
+        <!-- 2.2 Hybrid Images -->
+        <div class="subsection" id="part2-2">
+            <h3>2.2 Hybrid Images</h3>
+            <p>In here, I created three hybrid images. Fourier transform is shown for the third example to illustrate frequency contributions. For the bells & Whistles, I found out that adding color to the lower-frequency picture makes the hyrbid image more realistic. I believe it's because when you are close to the image, you can easily see the high frequency and color doesn't help much; at a distance, color kicks in and help you recognize the lower-frequency image faster,</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="derek_and_cat.png" alt="Section 2.2">
+                    <p>Derek and Cat</p>
+                </div>
+            </div>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="cat_and_dog.png" alt="Section 2.2">
+                    <p>Cat and Dog</p>
+                </div>
+            </div>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="2_2.png" alt="Section 2.2">
+                    <p>Is the final result a hybrid image? I thought it's the same person XD</p>
+                    <p>P.S. If you didn't get the joke, Daniel Wu is the Asian version of Brad Pitt that everyone claims to be him</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2.3 Gaussian and Laplacian Stacks -->
+        <div class="subsection" id="part2-3">
+            <h3>2.3 Gaussian and Laplacian Stacks</h3>
+            <p>Here, I generated Gaussian and Laplacian stacks for blending. The levels of the oraple stack are displayed below, with the last row being the final result.</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="2_3.png" alt="Section 2.3">
+                </div>
+            </div>
+        </div>
+
+        <!-- 2.4 Multiresolution Blending -->
+        <div class="subsection" id="part2-4">
+            <h3>2.4 Multiresolution Blending (Oraple)</h3>
+            <p>Here are two extra images I blended using Laplacian stacks and a Gaussian mask. The second example used a irregular mask. For the bells & Whistles, I added color to each blended image. It is much better than gray image when the 2 images' color are close, and they look more natural with rgb colors.</p>
+            <div class="image-container">
+                <div class="image-box">
+                    <img src="cat_blend.png" alt="Section 2.3">
+                    <p>2 orange cats blend!</p>
+                </div>
+                <div class="image-box">
+                    <img src="josh_blend.png" alt="Section 2.3">
+                    <p>Although it's blended, I am muscular like that irl (in my dream)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
