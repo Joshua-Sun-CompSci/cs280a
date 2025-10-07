@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Mosaicing Assignment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+            margin: 10px auto;
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        }
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .image-container {
+            flex: 1 1 30%;
+            text-align: center;
+        }
+        .caption {
+            font-size: 0.9em;
+            margin-top: 5px;
+            color: #555;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>CS180 / CS280A Image Mosaicing Assignment</h1>
+
+    <h2>A.1: Shoot and Digitize Pictures</h2>
+    <p>Two sets of pictures were taken for mosaicing:</p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="home_l.jpg" alt="Set 1 Image 1">
+            <div class="caption">Set 1 - Image 1</div>
+        </div>
+        <div class="image-container">
+            <img src="home_r.jpg" alt="Set 1 Image 2">
+            <div class="caption">Set 1 - Image 2</div>
+        </div>
+    </div>
+
+    <div class="image-row">
+        <div class="image-container">
+            <img src="lobby_l.jpg" alt="Set 2 Image 1">
+            <div class="caption">Set 2 - Image 1</div>
+        </div>
+        <div class="image-container">
+            <img src="lobby_m.jpg" alt="Set 2 Image 2">
+            <div class="caption">Set 2 - Image 2</div>
+        </div>
+        <div class="image-container">
+            <img src="lobby_r.jpg" alt="Set 2 Image 3">
+            <div class="caption">Set 2 - Image 3</div>
+        </div>
+    </div>
+
+    <h2>A.2: Recover Homographies</h2>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="home_pts.png" alt="Point Correspondences Set 1">
+            <div class="caption">Point correspondences for Set 1</div>
+        </div>
+    </div>
+    <p>
+        To estimate the homography matrix <strong>H</strong>, we form a system of linear equations
+        from corresponding points between two images. Each pair of correspondences 
+        <em>(xₙ, yₙ) → (uₙ, vₙ)</em> contributes two equations to the system:
+    </p>
+
+    <pre><code>
+A = [x₁, y₁, 1, 0, 0, 0, -x₁u₁, -y₁u₁],
+    [0, 0, 0, x₁, y₁, 1, -x₁v₁, -y₁v₁],
+    [x₂, y₂, 1, 0, 0, 0, -x₂u₂, -y₂u₂],
+    [0, 0, 0, x₂, y₂, 1, -x₂v₂, -y₂v₂],
+    [x₃, y₃, 1, 0, 0, 0, -x₃u₃, -y₃u₃],
+    [0, 0, 0, x₃, y₃, 1, -x₃v₃, -y₃v₃],
+    [x₄, y₄, 1, 0, 0, 0, -x₄u₄, -y₄u₄],
+    [0, 0, 0, x₄, y₄, 1, -x₄v₄, -y₄v₄]
+
+b = [u₁],
+    [v₁],
+    [u₂],
+    [v₂],
+    [u₃],
+    [v₃],
+    [u₄],
+    [v₄]
+    </code></pre>
+
+    <p>
+        The equation <strong>A · h = b</strong> is solved using least squares, where 
+        <em>h</em> is the 8-dimensional vector representing the entries of the homography matrix
+        (the 9th value is fixed to 1 for scale). The resulting 3×3 matrix <strong>H</strong> 
+        maps points from the first image to the second.
+    </p>
+    <div class="image-container">
+            <pre>
+H1 = [[1.447739337700669759e+00, 4.322275120828126399e-02, -1.284721206179840181e+02],
+    [2.744618702282577427e-01, 1.298791600810339952e+00, -2.613941193162229837e+01],
+    [2.110015892463942399e-03, 1.444242532437192534e-05, 1.000000000000000000e+00]]
+            </pre>
+        <div class="caption">Homography matrix for Set 1</div>
+    </div>
+
+    <h2>A.3: Warp the Images</h2>
+    <h3>Nearest Neighbor vs Bilinear Interpolation</h3>
+    <p>Comparison of Nearest Neighbor vs Bilinear: NN is faster but blockier; BI is smoother but may produce minor color holes.</p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="lobby_warp.png" alt="Warped NN+BI Set 2">
+            <div class="caption">Warped NN+BI</div>
+        </div>
+    </div>
+
+    <h3>Rectification Example</h3>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="home_l.jpg" alt="Original Image">
+            <div class="caption">Original Image</div>
+        </div>
+        <div class="image-container">
+            <img src="home_warped_bi.png" alt="Warped Bilinear">
+            <div class="caption">Warped Image - Bilinear</div>
+        </div>
+    </div>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="cmu_l.png" alt="Original Image">
+            <div class="caption">Original Image</div>
+        </div>
+        <div class="image-container">
+            <img src="cmu_warped_bi.png" alt="Warped Bilinear">
+            <div class="caption">Warped Image - Bilinear</div>
+        </div>
+    </div>
+
+    <h2>A.4: Blend the Images into a Mosaic</h2>
+    <p>Procedure to get the Mosaic: First, find the bounding box of the output mosaic by warping the corners of all input images. Then, create an output canvas large enough to hold the entire mosaic. For each input image, warp it into the output canvas using the computed homography and blend it with the existing content using weighted averaging to avoid harsh seams. Finally, normalize the color by the accumulated weights to ensure weighted averaging is implemented properly.</p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="cmu_l.png" alt="CMU Left Picture">
+            <div class="caption">CMU Left Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="cmu_r.png" alt="CMU Right Picture">
+            <div class="caption">CMU Right Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="cmu_mosaic.png" alt="CMU Mosaic Result">
+            <div class="caption">CMU Mosaic Result</div>
+        </div>
+    </div>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="home_l.jpg" alt="Home Left Picture">
+            <div class="caption">Home Left Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="home_r.jpg" alt="Home Right Picture">
+            <div class="caption">Home Right Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="home_mosaic.png" alt="Home Mosaic Result">
+            <div class="caption">Home Mosaic Result</div>
+        </div>
+    </div>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="Lobby_l.jpg" alt="Lobby Left Picture">
+            <div class="caption">Lobby Left Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="Lobby_m.jpg" alt="Lobby Middle Picture">
+            <div class="caption">Lobby Middle Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="Lobby_r.jpg" alt="Lobby Right Picture">
+            <div class="caption">Lobby Right Picture</div>
+        </div>
+        <div class="image-container">
+            <img src="Lobby_mosaic.png" alt="Lobby Mosaic Result">
+            <div class="caption">Lobby Mosaic Result</div>
+        </div>
+    </div>
+
+    <h2>A.5: Bells & Whistles (Cylindrical Mapping)</h2>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="cmu_cylindrical_mosaic.png" alt="Cylindrical Warp CMU">
+            <div class="caption">Cylindrical Warped CMU</div>
+            <div class="caption">Note that there is some overlap of the railing in the middle, likely because it was too close to the camera.</div>
+        </div>
+    </div>
+
+</body>
+</html>
