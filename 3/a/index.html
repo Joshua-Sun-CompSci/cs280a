@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Image Mosaicing Assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -203,11 +204,11 @@ H1 = [[1.447739337700669759e+00, 4.322275120828126399e-02, -1.284721206179840181
     </div>
 
     <h2>A.5: Bells & Whistles (Cylindrical Mapping)</h2>
+    <p>The idea for the cylindrical warp here is simple: Instead of using the homography matrix, warp each image as if they are cylindrical. Use the equations \( x = f \tan(\theta) + c_x \) and \( y = f \frac{h}{\cos(\theta)} + c_y \), where \(f\) is the focal length, \(\theta\) is the viewing angle from the center, and \(c_x\) \(c_y\) are the center coordinates, to find the corresponding pixel in the original image, then use bilinear interpolation to remap the pixels. Then manually adjust f and offset to get the best result.</p>
     <div class="image-row">
         <div class="image-container">
             <img src="cmu_cylindrical_mosaic.png" alt="Cylindrical Warp CMU">
             <div class="caption">Cylindrical Warped CMU</div>
-            <div class="caption">Note that there is some overlap of the railing in the middle, likely because it was too close to the camera.</div>
         </div>
     </div>
 
