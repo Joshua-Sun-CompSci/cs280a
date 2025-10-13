@@ -212,5 +212,113 @@ H1 = [[1.447739337700669759e+00, 4.322275120828126399e-02, -1.284721206179840181
         </div>
     </div>
 
+    <h2>B.1: Detecting Corner Features (Harris + ANMS)</h2>
+    <p>
+        We detect corners using the Harris Corner Detector. The resulting corners are then refined
+        using Adaptive Non-Maximal Suppression (ANMS) to select the most spatially well-distributed points. In this example,
+        we select the top 500 corners after ANMS.
+    </p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="ANMS.png" alt="Harris & ANMS Corners">
+            <div class="caption">Harris & ANMS corners detected on image</div>
+        </div>
+    </div>
+
+    <h2>B.2: Feature Descriptor Extraction</h2>
+    <p>
+        For each selected corner, we extract an 8×8 feature descriptor sampled from a 40×40 window.
+        Descriptors are normalized (zero mean, unit variance) to be robust to lighting changes.
+    </p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="Descriptors.png" alt="Feature Descriptors">
+            <div class="caption">Example feature descriptors extracted from selected corners</div>
+        </div>
+    </div>
+
+    <h2>B.3: Feature Matching</h2>
+    <p>
+        Feature descriptors are matched between images using squared nearest neighbor distance ratio test.
+        Matches with a ratio below 0.2 (first divided by second nearest neighbor) are considered valid.
+        Note that the paper mentioned 0.1 works the best, but in my case 0.1 only leaves me 5-10 corners
+        left, which is usually not enough to compute a robust homography. I adjusted the number
+        and found out that 0.2 works better in my case.
+    </p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="Feature_Matching.png" alt="Matched Features">
+            <div class="caption">Matched feature points between image pairs</div>
+        </div>
+    </div>
+
+    <h2>B.4: RANSAC for Robust Homography</h2>
+    <p>
+        We implement 4-point RANSAC to estimate robust homographies between image pairs. This allows
+        automatic mosaicing without manual correspondences. Below, we compare manually and automatically
+        stitched mosaics. In general, the automatic mosaics are better in quality to the manual ones
+        because there are less human error involved when selecting points. Note that the automatic CMU mosaic
+        was warped the other way around (right to left) to test the function's robustness, and it worked well 
+        as shown below.
+    </p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="home_mosaic.png" alt="Manual Mosaic Home">
+            <div class="caption">Manual stitching - Mosaic Home</div>
+        </div>
+        <div class="image-container">
+            <img src="home_mosaic_automatic.png" alt="Automatic Mosaic Home">
+            <div class="caption">Automatic stitching - Mosaic Home</div>
+        </div>
+    </div>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="cmu_mosaic.png" alt="Manual Mosaic CMU">
+            <div class="caption">Manual stitching - Mosaic CMU</div>
+        </div>
+        <div class="image-container">
+            <img src="cmu_mosaic_automatic.png" alt="Automatic Mosaic CMU">
+            <div class="caption">Automatic stitching - Mosaic CMU</div>
+        </div>
+    </div>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="lobby_mosaic.png" alt="Manual Mosaic Lobby">
+            <div class="caption">Manual stitching - Mosaic Lobby</div>
+        </div>
+        <div class="image-container">
+            <img src="lobby_mosaic_automatic.png" alt="Automatic Mosaic Lobby">
+            <div class="caption">Automatic stitching - Mosaic Lobby</div>
+        </div>
+    </div>
+
+    <h2>B.5: Bells & Whistles - Multiscale Processing</h2>
+    <p>
+        We enhanced corner detection and feature description using multiscale processing. Corners are
+        detected at multiple image scales, and descriptors are extracted from the corresponding scale.
+        The idea is to have multiple level image pyramids, detect the harris corners at each level,
+        and combine all level's harris corners. This detects corners at all levels, making image scaling
+        invariant to finding corners, and improves matching robustness.
+    </p>
+    <div class="image-row">
+        <div class="image-container">
+            <img src="Multiscale_Points.png" alt="Multiscale Harris Corners">
+            <div class="caption">Harris corners detected at multiple scales</div>
+        </div>
+        <div class="image-container">
+            <img src="Multiscale_Descriptors.png" alt="Multiscale Feature Matches">
+            <div class="caption">Feature matches with multiscale descriptors</div>
+        </div>
+    </div>
+
+    <p>
+        Fun fact: I used CMU pictures for both part A and B because I went there for a high school 
+        summer session before (also because I am too lazy to take another set of pictures lol),
+        and it was arguable one of the best six weeks of my life; I knew I wanted to study computer science
+        since then. If I remembered it right, the place right below the CMU picture was 
+        a Chinese resterant and it was my favorite place to have lunch XD
+    </p>
+
+
 </body>
 </html>
