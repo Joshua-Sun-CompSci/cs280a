@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diffusion Models Part A - Project Results</title>
+    <title>Project 5 Part A - Project Results</title>
     <style>
         * {
             margin: 0;
@@ -324,12 +324,13 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎨 Diffusion Models Part A</h1>
-            <p>CS 280 Project - UC Berkeley | Deep Learning on Images</p>
+            <h1>🎨 Project 5 Part A</h1>
+            <p>CS 280 Project</p>
         </header>
 
         <div class="content">
@@ -359,104 +360,56 @@
                     </div>
                     <div class="stat-row">
                         <div class="stat-label">Random Seed:</div>
-                        <div class="stat-value">42</div>
+                        <div class="stat-value">100</div>
                     </div>
                 </div>
 
                 <h3>Creative Text Prompts</h3>
-                <p>The following prompts were generated to showcase the model's capabilities across different domains:</p>
+                <p>Three creative prompts were selected to showcase the model's capabilities:</p>
                 
-                <div class="grid-2">
-                    <div class="card">
-                        <h4>Nature & Landscapes</h4>
-                        <p>• "A serene mountain lake at sunset with golden reflections"</p>
-                        <p>• "Dense misty forest with ancient redwood trees"</p>
-                        <p>• "Tropical waterfall hidden in a lush jungle"</p>
-                    </div>
-                    <div class="card">
-                        <h4>Fantasy & Art</h4>
-                        <p>• "An oil painting of an old man"</p>
-                        <p>• "An oil painting of people around a campfire"</p>
-                        <p>• "A steampunk airship flying through clouds"</p>
-                    </div>
-                    <div class="card">
-                        <h4>Objects & Food</h4>
-                        <p>• "A golden hour photograph of a rustic wooden cabin"</p>
-                        <p>• "A close-up of a delicate snowflake on ice"</p>
-                        <p>• "A bowl of fresh strawberries with whipped cream"</p>
-                    </div>
-                    <div class="card">
-                        <h4>Abstract & Technical</h4>
-                        <p>• "A futuristic city at night with neon lights"</p>
-                        <p>• "A rocket ship launching into space"</p>
-                        <p>• "A high quality photo"</p>
-                    </div>
+                <div class="card">
+                    <h4>Selected Prompts</h4>
+                    <p>• <strong>"a frog eating pizza"</strong> - Humorous combination of animal and food</p>
+                    <p>• <strong>"a horse walking on the moon"</strong> - Fantastical landscape scenario</p>
+                    <p>• <strong>"a cat working out in the gym"</strong> - Anthropomorphic animal activity</p>
                 </div>
 
-                <h3>Sample Generations</h3>
-                <p>Three representative prompts selected for detailed visualization and reflection:</p>
+                <h3>Sample Generations with Inference Steps Comparison</h3>
+                <p>The three prompts were generated with both 20 and 100 inference steps to demonstrate the impact of sampling iterations on image quality:</p>
 
-                <h4>1. Sunset Lake Reflection</h4>
-                <div class="grid-2">
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_sunset_100steps.png" alt="Sunset - 100 inference steps">
-                            <div class="comparison-label">100 Inference Steps</div>
-                        </div>
-                    </div>
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_sunset_50steps.png" alt="Sunset - 50 inference steps">
-                            <div class="comparison-label">50 Inference Steps</div>
-                        </div>
-                    </div>
+                <div class="image-container">
+                    <img src="num_inference_steps_20.png" alt="All samples - 20 inference steps">
+                    <div class="image-label"><strong>20 Inference Steps</strong> - All three prompts shown together</div>
+                </div>
+
+                <div class="image-container">
+                    <img src="num_inference_steps_100.png" alt="All samples - 100 inference steps">
+                    <div class="image-label"><strong>100 Inference Steps</strong> - All three prompts shown together</div>
                 </div>
 
                 <div class="reflection-box">
-                    <h5>Reflection</h5>
-                    <p>The model successfully generates a plausible mountain landscape with warm sunset colors. With 100 inference steps, the details are sharper and the water reflection is more coherent. At 50 steps, the image is slightly more abstract but still recognizable. The golden lighting is well-captured across both versions.</p>
+                    <h5>Overall Reflection on Inference Steps</h5>
+                    <p>The comparison between 20 and 100 inference steps clearly demonstrates the quality-computation tradeoff in diffusion models. With 100 steps, all three generations show improved detail, clearer subject definition, and smoother texture rendering. The 20-step versions are noisier and less refined but still convey the core concepts of each prompt.</p>
                 </div>
 
-                <h4>2. Steampunk Airship</h4>
-                <div class="grid-2">
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_steampunk_100steps.png" alt="Steampunk - 100 inference steps">
-                            <div class="comparison-label">100 Inference Steps</div>
-                        </div>
+                <h4>Computational Efficiency Trade-off</h4>
+                <div class="stats-box">
+                    <div class="stat-row">
+                        <div class="stat-label">20 Steps</div>
+                        <div class="stat-value">Fast generation (~1-2 minutes), lower quality, more artifacts</div>
                     </div>
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_steampunk_50steps.png" alt="Steampunk - 50 inference steps">
-                            <div class="comparison-label">50 Inference Steps</div>
-                        </div>
+                    <div class="stat-row">
+                        <div class="stat-label">100 Steps</div>
+                        <div class="stat-value">Slower generation (~5-8 minutes), superior quality, refined details</div>
                     </div>
                 </div>
 
-                <div class="reflection-box">
-                    <h5>Reflection</h5>
-                    <p>The steampunk airship generation demonstrates the model's ability to combine complex concepts. At 100 steps, mechanical details and Victorian-era aesthetics are more refined. At 50 steps, the general shape and color palette remain but with less intricate detail. The cloudy sky provides good atmospheric context in both cases.</p>
-                </div>
-
-                <h4>3. Delicate Snowflake</h4>
-                <div class="grid-2">
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_snowflake_100steps.png" alt="Snowflake - 100 inference steps">
-                            <div class="comparison-label">100 Inference Steps</div>
-                        </div>
+                <h4>Random Seed</h4>
+                <div class="stats-box">
+                    <div class="stat-row">
+                        <div class="stat-label">Seed Value:</div>
+                        <div class="stat-value">100 (for reproducibility)</div>
                     </div>
-                    <div class="comparison-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
-                        <div class="comparison-item">
-                            <img src="part0_snowflake_50steps.png" alt="Snowflake - 50 inference steps">
-                            <div class="comparison-label">50 Inference Steps</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reflection-box">
-                    <h5>Reflection</h5>
-                    <p>Fine-grained textures like snowflakes benefit significantly from more denoising steps. The 100-step version shows intricate crystalline structures with better definition. The 50-step version is more blurred but still conveys the concept of a cold, icy surface. This highlights the trade-off between quality and computational efficiency.</p>
                 </div>
             </section>
 
@@ -470,7 +423,9 @@
                 <div class="stats-box">
                     <div class="stat-row">
                         <div class="stat-label">Process:</div>
-                        <div class="stat-value">x_t = √(ᾱ_t) * x_0 + √(1 - ᾱ_t) * ε</div>
+                        <div class="stat-value">
+                            \( x_t = \sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1 - \bar{\alpha}_t}\, \varepsilon \)
+                        </div>
                     </div>
                     <div class="stat-row">
                         <div class="stat-label">Input Image:</div>
@@ -483,37 +438,18 @@
                 </div>
 
                 <h3>Noisy Campanile at Different Timesteps</h3>
-                <div class="grid-3">
-                    <div class="comparison-item">
-                        <img src="forward_campanile_250.png" alt="Campanile at t=250">
-                        <div class="comparison-label">t = 250 (Low Noise)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="forward_campanile_500.png" alt="Campanile at t=500">
-                        <div class="comparison-label">t = 500 (Medium Noise)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="forward_campanile_750.png" alt="Campanile at t=750">
-                        <div class="comparison-label">t = 750 (High Noise)</div>
-                    </div>
+                <p>Forward process visualization showing noise progression from t=250 to t=750:</p>
+                <div class="image-container">
+                    <img src="1_1.png" alt="Forward process - t=250, 500, 750">
+                    <div class="image-label">Forward Process: Campanile at noise levels t = 250 (low), 500 (medium), 750 (high)</div>
                 </div>
 
                 <h3>1.2 Classical Denoising (Gaussian Blur)</h3>
                 <p>Attempting to recover the original image using traditional Gaussian blur filtering:</p>
 
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="gaussian_denoised_250.png" alt="Gaussian denoised t=250">
-                        <div class="comparison-label">t = 250</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="gaussian_denoised_500.png" alt="Gaussian denoised t=500">
-                        <div class="comparison-label">t = 500</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="gaussian_denoised_750.png" alt="Gaussian denoised t=750">
-                        <div class="comparison-label">t = 750</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_2.png" alt="Gaussian blur denoising - t=250, 500, 750">
+                    <div class="image-label">Classical Denoising: Gaussian blur results at t = 250, 500, 750</div>
                 </div>
 
                 <div class="reflection-box">
@@ -524,23 +460,9 @@
                 <h3>1.3 One-Step Denoising with Diffusion Model</h3>
                 <p>Using a pre-trained diffusion model UNet to estimate and remove noise in a single step:</p>
 
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="onestep_original.png" alt="Original Campanile">
-                        <div class="comparison-label">Original</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="onestep_denoised_250.png" alt="One-step denoised t=250">
-                        <div class="comparison-label">One-Step t=250</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="onestep_denoised_500.png" alt="One-step denoised t=500">
-                        <div class="comparison-label">One-Step t=500</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="onestep_denoised_750.png" alt="One-step denoised t=750">
-                        <div class="comparison-label">One-Step t=750</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_3.png" alt="One-step denoising comparison">
+                    <div class="image-label">One-Step Denoising: Original, noisy (t=250, 500, 750), and denoised results</div>
                 </div>
 
                 <div class="reflection-box">
@@ -552,76 +474,28 @@
                 <p>Applying multiple denoising steps with a strided timestep schedule (stride=30) for progressive refinement:</p>
 
                 <h4>Iterative Denoising Process (i_start=10)</h4>
-                <p>Starting from timestep t=300, progressively denoising to t=0:</p>
+                <p>Progressive denoising from t=990 to t=0, showing intermediate steps:</p>
 
-                <div class="grid-5">
-                    <div class="comparison-item">
-                        <img src="iterative_step_0.png" alt="Iterative t=300">
-                        <div class="comparison-label">Step 0 (t~300)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="iterative_step_5.png" alt="Iterative t~150">
-                        <div class="comparison-label">Step 5 (t~150)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="iterative_step_10.png" alt="Iterative t~30">
-                        <div class="comparison-label">Step 10 (t~30)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="iterative_step_15.png" alt="Iterative t~0">
-                        <div class="comparison-label">Step 15 (t~0)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="iterative_final.png" alt="Final iterative">
-                        <div class="comparison-label">Final</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_4_1.png" alt="Iterative denoising progression">
+                    <div class="image-label">Iterative Denoising: Progressive refinement from noisy to clean image (t~0)</div>
                 </div>
-
-                <h4>Comparison: Different Denoising Methods</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="original_campanile.png" alt="Original">
-                        <div class="comparison-label">Original</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="iterative_final.png" alt="Iterative denoised">
-                        <div class="comparison-label">Iterative (Best)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="onestep_final.png" alt="One-step denoised">
-                        <div class="comparison-label">One-Step</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_4_2.png" alt="Iterative denoising progression">
+                    <div class="image-label">Result Comparision</div>
                 </div>
 
                 <div class="reflection-box">
                     <h5>Key Finding</h5>
-                    <p>Iterative denoising with multiple steps produces significantly better results than one-step denoising. The progressive refinement allows the model to make better decisions at each stage. The reconstructed image closely matches the original, preserving fine details like the tower's crown.</p>
+                    <p>Iterative denoising with multiple steps produces significantly better results than one-step denoising. The progressive refinement allows the model to make better decisions at each stage. The reconstructed image closely matches the original, preserving finer details.</p>
                 </div>
 
                 <h3>1.5 Diffusion Model Sampling (No CFG)</h3>
                 <p>Generating images from scratch by denoising random noise with no text conditioning:</p>
 
-                <div class="grid-5">
-                    <div class="comparison-item">
-                        <img src="sample_no_cfg_1.png" alt="Sample 1">
-                        <div class="comparison-label">Sample 1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_no_cfg_2.png" alt="Sample 2">
-                        <div class="comparison-label">Sample 2</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_no_cfg_3.png" alt="Sample 3">
-                        <div class="comparison-label">Sample 3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_no_cfg_4.png" alt="Sample 4">
-                        <div class="comparison-label">Sample 4</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_no_cfg_5.png" alt="Sample 5">
-                        <div class="comparison-label">Sample 5</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_5.png" alt="Unconditional generation samples">
+                    <div class="image-label">Unconditional Sampling: 5 generated images without text guidance</div>
                 </div>
 
                 <div class="reflection-box">
@@ -630,517 +504,200 @@
                 </div>
 
                 <h3>1.6 Classifier-Free Guidance (CFG)</h3>
-                <p>Using both conditional and unconditional predictions to enhance image quality with scale factor γ = 7.5:</p>
+                <p>Using both conditional and unconditional predictions to enhance image quality with scale factor γ = 7:</p>
 
-                <div class="grid-5">
-                    <div class="comparison-item">
-                        <img src="sample_cfg_1.png" alt="CFG Sample 1">
-                        <div class="comparison-label">Sample 1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_cfg_2.png" alt="CFG Sample 2">
-                        <div class="comparison-label">Sample 2</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_cfg_3.png" alt="CFG Sample 3">
-                        <div class="comparison-label">Sample 3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_cfg_4.png" alt="CFG Sample 4">
-                        <div class="comparison-label">Sample 4</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sample_cfg_5.png" alt="CFG Sample 5">
-                        <div class="comparison-label">Sample 5</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_6.png" alt="CFG guided generation samples">
+                    <div class="image-label">CFG Sampling (γ=7): 5 generated images with text guidance</div>
                 </div>
 
                 <div class="reflection-box">
                     <h5>Dramatic Improvement</h5>
-                    <p>CFG significantly improves image quality and coherence. The generated images now appear much more realistic and photo-like. While not perfect (64×64 is low resolution), they are substantially better than unconditioned samples. The scale factor γ = 7.5 provides a good balance between fidelity to the prompt and diversity.</p>
+                    <p>CFG significantly improves image quality and coherence. The generated images now appear much more realistic and photo-like. While not perfect (64×64 is low resolution), they are substantially better than unconditioned samples. The scale factor γ = 7 provides a good balance between fidelity to the prompt and diversity.</p>
                 </div>
             </section>
 
-            <!-- PART 2: IMAGE EDITING -->
+            <!-- PART 1.7: IMAGE-TO-IMAGE TRANSLATION -->
             <section>
-                <h2>Part 2: Image Editing Tasks</h2>
-
-                <h3>2.1 Image-to-Image Translation (SDEdit)</h3>
-                <p>Using diffusion to "project" images onto the natural image manifold by adding noise and denoising with a text prompt:</p>
+                <h3>Part 1.7: Image-to-Image Translation (SDEdit)</h3>
+                
+                <p>Using diffusion to "project" images onto the natural image manifold by adding noise and denoising with a text prompt. This follows the SDEdit algorithm.</p>
 
                 <h4>Campanile with Prompt: "a high quality photo"</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i1.png" alt="SDEdit i_start=1">
-                        <div class="comparison-label">i_start=1 (Minimal change)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i3.png" alt="SDEdit i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i5.png" alt="SDEdit i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i7.png" alt="SDEdit i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i10.png" alt="SDEdit i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_campanile_i20.png" alt="SDEdit i_start=20">
-                        <div class="comparison-label">i_start=20 (Large edit)</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_7_0_campanile.png" alt="SDEdit on Campanile">
+                    <div class="image-label">SDEdit Results: Campanile at different i_start values [1, 3, 5, 7, 10, 20]</div>
                 </div>
 
                 <div class="reflection-box">
                     <h5>Observation</h5>
-                    <p>The parameter i_start controls the degree of "hallucination" applied to the image. Small values (i_start=1) preserve the original content very closely. Larger values allow greater stylistic changes while remaining loosely aligned with the original structure. This demonstrates a smooth interpolation between identity and free-form generation.</p>
+                    <p>The parameter i_start controls the degree of "hallucination" applied to the image. Larger values (i_start=20) preserve the original content very closely. Smaller values allow greater stylistic changes while remaining loosely aligned with the original structure. This demonstrates a smooth interpolation between identity and free-form generation.</p>
                 </div>
 
-                <h4>Custom Test Image 1</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Original photograph - sunset over mountains</p>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i1.png" alt="Custom 1 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
+                <h4>Custom Cat Image 1 & 2 SDEdit</h4>
+                <p style="font-style: italic; color: #666; margin: 10px 0;">Two custom cat images edited with varying i_start parameters</p>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="1_7_0_cat1.png" alt="Custom image 1 SDEdit">
+                        <div class="image-label">Custom Cat Image 1: SDEdit progression</div>
                     </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i3.png" alt="Custom 1 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i5.png" alt="Custom 1 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i7.png" alt="Custom 1 i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i10.png" alt="Custom 1 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom1_i20.png" alt="Custom 1 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
+                    <div class="image-container">
+                        <img src="1_7_0_cat2.png" alt="Custom image 2 SDEdit">
+                        <div class="image-label">Custom Cat Image 2: SDEdit progression</div>
                     </div>
                 </div>
+            </section>
 
-                <h4>Custom Test Image 2</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Original photograph - forest scene</p>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i1.png" alt="Custom 2 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i3.png" alt="Custom 2 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i5.png" alt="Custom 2 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i7.png" alt="Custom 2 i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i10.png" alt="Custom 2 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="sdedit_custom2_i20.png" alt="Custom 2 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
-                    </div>
+            <!-- PART 1.7.1: HAND-DRAWN & WEB IMAGES -->
+            <section>
+                <h3>Part 1.7.1: Editing Hand-Drawn and Web Images</h3>
+                
+                <p>Applying diffusion to non-realistic inputs to project them onto the natural image manifold. This procedure works particularly well with hand-drawn images, sketches, and web-sourced images.</p>
+
+                <h4>Web Image Transformation</h4>
+                <div class="image-container">
+                    <img src="1_7_1_download.png" alt="Web image transformation">
+                    <div class="image-label">Web Image: SDEdit progression at i_start values [1, 3, 5, 7, 10, 20]</div>
                 </div>
 
-                <h3>2.1.1 Hand-Drawn & Web Images</h3>
-                <p>Applying diffusion to non-realistic inputs to "complete" them onto the natural image manifold:</p>
+                <h4>Hand-Drawn Images (2 Sketches)</h4>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="1_7_1_hand1.png" alt="Hand-drawn sketch 1">
+                        <div class="image-label">Hand-Drawn Cat</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="1_7_1_hand2.png" alt="Hand-drawn sketch 2">
+                        <div class="image-label">Hand-Drawn Muscular Man</div>
+                    </div>
+                </div>
+            </section>
 
-                <h4>Web Image: Avocado</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="web_avocado_orig.png" alt="Avocado original">
-                        <div class="comparison-label">Original</div>
+            <!-- PART 1.7.2: INPAINTING -->
+            <section>
+                <h3>Part 1.7.2: Inpainting</h3>
+                
+                <p>Using diffusion to intelligently fill masked regions while preserving unmasked content. Given an image and a binary mask, we generate new content in masked regions while keeping the unmasked areas intact.</p>
+
+                <h4>Inpainting Examples</h4>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="1_7_2_campanile.png" alt="Campanile inpainting">
+                        <div class="image-label">Campanile Inpainting</div>
                     </div>
-                    <div class="comparison-item">
-                        <img src="web_avocado_i1.png" alt="Avocado i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="web_avocado_i3.png" alt="Avocado i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="web_avocado_i5.png" alt="Avocado i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="web_avocado_i10.png" alt="Avocado i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="web_avocado_i20.png" alt="Avocado i_start=20">
-                        <div class="comparison-label">i_start=20</div>
+                    <div class="image-container">
+                        <img src="1_7_2_cat1.png" alt="Custom image inpainting 1">
+                        <div class="image-label">Cat Image 1 Inpainting</div>
                     </div>
                 </div>
 
-                <h4>Hand-Drawn Image 1: Simple Sketch</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_orig.png" alt="Sketch 1 original">
-                        <div class="comparison-label">Original</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_i1.png" alt="Sketch 1 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_i3.png" alt="Sketch 1 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_i5.png" alt="Sketch 1 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_i10.png" alt="Sketch 1 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch1_i20.png" alt="Sketch 1 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
-                    </div>
-                </div>
-
-                <h4>Hand-Drawn Image 2: Detailed Drawing</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_orig.png" alt="Sketch 2 original">
-                        <div class="comparison-label">Original</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_i1.png" alt="Sketch 2 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_i3.png" alt="Sketch 2 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_i5.png" alt="Sketch 2 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_i10.png" alt="Sketch 2 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="hand_sketch2_i20.png" alt="Sketch 2 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
-                    </div>
-                </div>
-
-                <h3>2.1.2 Inpainting</h3>
-                <p>Using diffusion to intelligently fill masked regions while preserving unmasked content:</p>
-
-                <h4>Campanile Inpainting - Removing Top of Tower</h4>
-                <div class="grid-4">
-                    <div class="image-container">
-                        <img src="inpaint_campanile_original.png" alt="Original Campanile">
-                        <div class="image-label">Original Image</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_campanile_mask.png" alt="Inpaint mask">
-                        <div class="image-label">Inpaint Mask</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_campanile_result.png" alt="Inpainted result">
-                        <div class="image-label">Inpainted Result</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_campanile_alt.png" alt="Alternative inpaint">
-                        <div class="image-label">Alternative Result</div>
-                    </div>
-                </div>
-
-                <h4>Custom Image 1 Inpainting</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Forest scene with masked region</p>
-                <div class="grid-4">
-                    <div class="image-container">
-                        <img src="inpaint_custom1_original.png" alt="Custom 1 original">
-                        <div class="image-label">Original</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom1_mask.png" alt="Custom 1 mask">
-                        <div class="image-label">Mask</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom1_result.png" alt="Custom 1 result">
-                        <div class="image-label">Inpainted</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom1_alt.png" alt="Custom 1 alternative">
-                        <div class="image-label">Alternative</div>
-                    </div>
-                </div>
-
-                <h4>Custom Image 2 Inpainting</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Still life arrangement with removed object</p>
-                <div class="grid-4">
-                    <div class="image-container">
-                        <img src="inpaint_custom2_original.png" alt="Custom 2 original">
-                        <div class="image-label">Original</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom2_mask.png" alt="Custom 2 mask">
-                        <div class="image-label">Mask</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom2_result.png" alt="Custom 2 result">
-                        <div class="image-label">Inpainted</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="inpaint_custom2_alt.png" alt="Custom 2 alternative">
-                        <div class="image-label">Alternative</div>
-                    </div>
+                <div class="image-container">
+                    <img src="1_7_2_cat2.png" alt="Custom image inpainting 2">
+                    <div class="image-label">Cat Image 2 Inpainting</div>
                 </div>
 
                 <div class="reflection-box">
                     <h5>Inpainting Results</h5>
-                    <p>The inpainting technique successfully reconstructs plausible content in masked regions. The model learns to blend the generated content with the preserved regions. Results vary with different random seeds, providing multiple plausible completions. The quality is limited at 64×64 resolution but demonstrates the core concept effectively.</p>
-                </div>
-
-                <h3>2.1.3 Text-Conditional Image-to-Image</h3>
-                <p>Transforming images using both the original structure and a custom text prompt:</p>
-
-                <h4>Campanile → "a rocket ship launching into space"</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i1.png" alt="Rocket i_start=1">
-                        <div class="comparison-label">i_start=1 (Original)</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i3.png" alt="Rocket i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i5.png" alt="Rocket i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i7.png" alt="Rocket i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i10.png" alt="Rocket i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_rocket_i20.png" alt="Rocket i_start=20">
-                        <div class="comparison-label">i_start=20 (New)</div>
-                    </div>
-                </div>
-
-                <h4>Custom Image 1 → "under water blue kingdom"</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i1.png" alt="Custom 1 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i3.png" alt="Custom 1 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i5.png" alt="Custom 1 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i7.png" alt="Custom 1 i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i10.png" alt="Custom 1 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom1_i20.png" alt="Custom 1 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
-                    </div>
-                </div>
-
-                <h4>Custom Image 2 → "a painting in the style of Van Gogh"</h4>
-                <div class="comparison-grid">
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i1.png" alt="Custom 2 i_start=1">
-                        <div class="comparison-label">i_start=1</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i3.png" alt="Custom 2 i_start=3">
-                        <div class="comparison-label">i_start=3</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i5.png" alt="Custom 2 i_start=5">
-                        <div class="comparison-label">i_start=5</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i7.png" alt="Custom 2 i_start=7">
-                        <div class="comparison-label">i_start=7</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i10.png" alt="Custom 2 i_start=10">
-                        <div class="comparison-label">i_start=10</div>
-                    </div>
-                    <div class="comparison-item">
-                        <img src="text_cond_custom2_i20.png" alt="Custom 2 i_start=20">
-                        <div class="comparison-label">i_start=20</div>
-                    </div>
+                    <p>The inpainting technique successfully reconstructs interesting (and funny) content in masked regions. The model learns to blend the generated content with the preserved regions. Results vary with different random seeds, providing multiple plausible completions. The quality is limited at 64×64 resolution but demonstrates the core concept effectively.</p>
                 </div>
             </section>
 
-            <!-- PART 3: OPTICAL ILLUSIONS -->
+            <!-- PART 1.7.3: TEXT-CONDITIONAL IMAGE-TO-IMAGE -->
             <section>
-                <h2>Part 3: Optical Illusions & Hybrid Images</h2>
-
-                <h3>3.1 Visual Anagrams</h3>
-                <p>Creating images that reveal different content when flipped upside down by averaging noise estimates from two different prompts at flipped orientations:</p>
-
-                <h4>Visual Anagram 1: Old Man ↔ Campfire</h4>
-                <div class="grid-2">
-                    <div class="image-container">
-                        <img src="anagram1_right.png" alt="Visual anagram 1 - right side up">
-                        <div class="image-label">Right-side up: "an oil painting of an old man"</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="anagram1_flipped.png" alt="Visual anagram 1 - flipped">
-                        <div class="image-label">Flipped: "an oil painting of people around a campfire"</div>
-                    </div>
-                </div>
-
-                <div class="reflection-box">
-                    <h5>Observation</h5>
-                    <p>The visual anagram successfully encodes two distinct images in a single frame. When viewed upright, the brush strokes and color distribution suggest an elderly figure. When rotated 180°, the same pixels are reinterpreted by our visual system as a group of people with flames. This demonstrates the power of diffusion models to find clever solutions in high-dimensional space.</p>
-                </div>
-
-                <h4>Visual Anagram 2: Custom Creation</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Your choice of two prompts for anagram</p>
-                <div class="grid-2">
-                    <div class="image-container">
-                        <img src="anagram2_right.png" alt="Visual anagram 2 - right side up">
-                        <div class="image-label">Right-side up: [Prompt A]</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="anagram2_flipped.png" alt="Visual anagram 2 - flipped">
-                        <div class="image-label">Flipped: [Prompt B]</div>
-                    </div>
-                </div>
-
-                <h3>3.2 Hybrid Images</h3>
-                <p>Combining low-frequency content from one image with high-frequency content from another using Fourier decomposition:</p>
-
-                <h4>Hybrid Image 1: Skull + Waterfall</h4>
-                <div class="grid-4">
-                    <div class="image-container">
-                        <img src="hybrid1_prompt1.png" alt="Hybrid 1 - prompt 1">
-                        <div class="image-label">Low-freq: "a skull"</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid1_prompt2.png" alt="Hybrid 1 - prompt 2">
-                        <div class="image-label">High-freq: "a beautiful waterfall"</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid1_result.png" alt="Hybrid 1 - result">
-                        <div class="image-label">Hybrid Result</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid1_result_zoomed.png" alt="Hybrid 1 - zoomed">
-                        <div class="image-label">Zoomed (High-freq)</div>
-                    </div>
-                </div>
-
-                <div class="reflection-box">
-                    <h5>Observation</h5>
-                    <p>From a distance, the hybrid image appears to be a skull (low frequencies). When viewed up close or zoomed in, the fine details reveal a waterfall (high frequencies). This demonstrates the decomposition of images into frequency bands and how our visual system interprets them at different scales.</p>
-                </div>
-
-                <h4>Hybrid Image 2: Custom Creation</h4>
-                <p style="font-style: italic; color: #666; margin: 10px 0;">Your choice of two prompts for hybrid</p>
-                <div class="grid-4">
-                    <div class="image-container">
-                        <img src="hybrid2_prompt1.png" alt="Hybrid 2 - prompt 1">
-                        <div class="image-label">Low-freq: [Prompt A]</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid2_prompt2.png" alt="Hybrid 2 - prompt 2">
-                        <div class="image-label">High-freq: [Prompt B]</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid2_result.png" alt="Hybrid 2 - result">
-                        <div class="image-label">Hybrid Result</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="hybrid2_result_zoomed.png" alt="Hybrid 2 - zoomed">
-                        <div class="image-label">Zoomed (High-freq)</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- BELLS & WHISTLES -->
-            <section>
-                <h2>Bells & Whistles: Advanced Techniques</h2>
-
-                <h3>Additional Visual Anagrams with Alternative Transformations</h3>
-                <p><strong>Note:</strong> This section is required for CS 280A students. Implements visual anagrams using transformations beyond vertical flipping.</p>
-
-                <h4>Anagram with Rotation Transformation</h4>
-                <p>Instead of flipping upside-down, using 90° rotation to reveal different images:</p>
-                <div class="grid-2">
-                    <div class="image-container">
-                        <img src="bw_anagram_rotation_0.png" alt="Rotation anagram - 0°">
-                        <div class="image-label">0° Rotation: [Prompt 1]</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="bw_anagram_rotation_90.png" alt="Rotation anagram - 90°">
-                        <div class="image-label">90° Rotation: [Prompt 2]</div>
-                    </div>
-                </div>
-
-                <h4>Anagram with Horizontal Flip Transformation</h4>
-                <p>Mirroring left-right instead of top-bottom to encode different concepts:</p>
-                <div class="grid-2">
-                    <div class="image-container">
-                        <img src="bw_anagram_hflip_normal.png" alt="H-flip anagram - normal">
-                        <div class="image-label">Normal: [Prompt 1]</div>
-                    </div>
-                    <div class="image-container">
-                        <img src="bw_anagram_hflip_mirrored.png" alt="H-flip anagram - flipped">
-                        <div class="image-label">H-Flipped: [Prompt 2]</div>
-                    </div>
-                </div>
-
-                <h3>Course Logo Design</h3>
-                <p>Applying text-conditioned image-to-image translation to create a stylized version of UC Berkeley's logo:</p>
+                <h3>Part 1.7.3: Text-Conditional Image-to-Image Translation</h3>
                 
-                <div class="grid-2">
+                <p>Transforming images using both the original structure and a custom text prompt. This combines SDEdit with text guidance to enable controlled creative transformations.</p>
+
+                <h4>Three Custom Text Transformations</h4>
+                <div class="grid-3">
                     <div class="image-container">
-                        <img src="logo_original.png" alt="Original Berkeley logo">
-                        <div class="image-label">Original Logo</div>
+                        <img src="1_7_3_campanile.png" alt="Text-conditional transformation 1">
+                        <div class="image-label">Campanile → "a pencil"</div>
                     </div>
                     <div class="image-container">
-                        <img src="logo_transformed.png" alt="Transformed Berkeley logo">
-                        <div class="image-label">Transformed: "futuristic neon version of Berkeley's logo"</div>
+                        <img src="1_7_3_cat1.png" alt="Text-conditional transformation 2">
+                        <div class="image-label">Cat Image 1 → "a dog"</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="1_7_3_cat2.png" alt="Text-conditional transformation 3">
+                        <div class="image-label">Cat Image 2 → "a man"</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PART 1.8: VISUAL ANAGRAMS -->
+            <section>
+                <h3>Part 1.8: Visual Anagrams</h3>
+                
+                <p>Creating images that reveal different content when flipped upside down by averaging noise estimates from two different prompts at flipped orientations. This creates optical illusions that exploit the structure of the visual system.</p>
+
+                <h4>Visual Anagrams (2 Examples)</h4>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="1_8_oldman_campfire.png" alt="Visual anagram 1 - old man and campfire">
+                        <div class="image-label">Visual Anagram 1: "an oil painting of an old man" ↔ "people around a campfire" (when flipped)</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="1_8_penguin_giraffe.png" alt="Visual anagram 2 - penguin and giraffe">
+                        <div class="image-label">Visual Anagram 2: "a penguin" ↔ "a giraffe" (when flipped)</div>
                     </div>
                 </div>
 
                 <div class="reflection-box">
-                    <h5>Logo Transformation Process</h5>
-                    <p>The diffusion model reinterprets the iconic "C" symbol while maintaining recognizable structure. The neon aesthetic adds modern visual appeal while preserving the essential identity. This demonstrates potential applications in brand design and logo modernization.</p>
+                    <h5>Observation</h5>
+                    <p>Visual anagrams successfully encode two distinct images in a single frame. When viewed upright, one interpretation emerges. When rotated 180°, the same pixels are reinterpreted as a completely different subject. This demonstrates the power of diffusion models to find clever solutions in high-dimensional space, exploiting the structure of natural images and our visual perception.</p>
+                </div>
+            </section>
+
+            <!-- PART 1.9: HYBRID IMAGES -->
+            <section>
+                <h3>Part 1.9: Hybrid Images</h3>
+                
+                <p>Creating hybrid images using Factorized Diffusion. By combining low-frequency content from one image with high-frequency content from another, we create images that appear different at different viewing distances.</p>
+
+                <h4>Hybrid Images (2 Examples)</h4>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="1_9_pencil_rocketship.png" alt="Hybrid image 1 - pencil and rocket">
+                        <div class="image-label">Hybrid Image 1: Low-freq "a pencil" + High-freq "a rocket ship"</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="1_9_skull_waterfalls.png" alt="Hybrid image 2 - skull and waterfall">
+                        <div class="image-label">Hybrid Image 2: Low-freq "a skull" + High-freq "a waterfall"</div>
+                    </div>
+                </div>
+
+                <div class="reflection-box">
+                    <h5>Observation</h5>
+                    <p>From a distance, hybrid images appear to show the low-frequency component. When viewed up close or zoomed in, the fine details reveal the high-frequency component. This demonstrates how visual perception decomposes images into frequency bands and how our visual system interprets them at different scales.</p>
+                </div>
+            </section>
+
+            <!-- PART 2: BELLS & WHISTLES -->
+            <section>
+                <h2>Part 2: Bells & Whistles</h2>
+
+                <h3>More Visual Anagrams with Alternative Transformations</h3>
+                <p>Visual anagrams can use transformations beyond vertical flipping. This section implements visual anagrams using two additional transformations.</p>
+
+                <h4>Anagram with Negatives</h4>
+                <p>Using negatives to reveal different images:</p>
+                <div class="image-container">
+                    <img src="2_bear_rabbit.png" alt="Negative anagram">
+                    <div class="image-label">Negative Image 1: Teddy bear positive + rabbit negative</div>
+                </div>
+
+                <div class="image-container">
+                    <img src="2_man_woman.png" alt="Negative anagram">
+                    <div class="image-label">Negative Image 2: Man positive + woman negative</div>
+                </div>
+
+                <h3>UC Berkeley Course Logo Design</h3>
+                <p>Applying text-conditioned image-to-image translation to create stylized interpretations of iconic logos:</p>
+                
+                <div class="image-container">
+                    <img src="2_course_logo.png" alt="Transformed logo design">
+                    <div class="image-label">Course Logo Transformation: "a logo with text CV in the middle"</div>
                 </div>
             </section>
 
@@ -1154,7 +711,7 @@
                     <div class="checklist-item">✓ 3 representative samples generated with captions</div>
                     <div class="checklist-item">✓ Quality reflections for each output</div>
                     <div class="checklist-item">✓ Comparison between 2 different inference step values (50 vs 100)</div>
-                    <div class="checklist-item">✓ Random seed documented: 42</div>
+                    <div class="checklist-item">✓ Random seed documented: 100</div>
 
                     <h3 style="color: #667eea; margin-top: 20px;">Part 1: Diffusion Sampling Loops</h3>
                     <div class="checklist-item">✓ 1.1 Forward process implementation and visualization at t=[250, 500, 750]</div>
@@ -1164,23 +721,24 @@
                     <div class="checklist-item">✓ 1.5 Sampling from pure noise (unconditional generation)</div>
                     <div class="checklist-item">✓ 1.6 Classifier-Free Guidance with γ=7.5</div>
 
-                    <h3 style="color: #667eea; margin-top: 20px;">Part 2: Image Editing Tasks</h3>
-                    <div class="checklist-item">✓ 2.1 SDEdit on Campanile with varying i_start values</div>
-                    <div class="checklist-item">✓ 2.1 SDEdit on 2 custom test images</div>
-                    <div class="checklist-item">✓ 2.1.1 Web image editing (1 example)</div>
-                    <div class="checklist-item">✓ 2.1.1 Hand-drawn images (2 examples)</div>
-                    <div class="checklist-item">✓ 2.1.2 Inpainting on Campanile with custom mask</div>
-                    <div class="checklist-item">✓ 2.1.2 Inpainting on 2 custom images</div>
-                    <div class="checklist-item">✓ 2.1.3 Text-conditional image-to-image translation on Campanile</div>
-                    <div class="checklist-item">✓ 2.1.3 Text-conditional transformation on 2 custom images</div>
+                    <h3 style="color: #667eea; margin-top: 20px;">Part 1.7: Image-to-Image Translation</h3>
+                    <div class="checklist-item">✓ 1.7 SDEdit on Campanile with i_start=[1, 3, 5, 7, 10, 20]</div>
+                    <div class="checklist-item">✓ 1.7 SDEdit on 2 custom cat images</div>
+                    <div class="checklist-item">✓ 1.7.1 Web image editing (1 example)</div>
+                    <div class="checklist-item">✓ 1.7.1 Hand-drawn images (2 examples)</div>
+                    <div class="checklist-item">✓ 1.7.2 Inpainting on Campanile</div>
+                    <div class="checklist-item">✓ 1.7.2 Inpainting on 2 custom images</div>
+                    <div class="checklist-item">✓ 1.7.3 Text-conditional transformation on Campanile</div>
+                    <div class="checklist-item">✓ 1.7.3 Text-conditional transformation on 2 custom images</div>
 
-                    <h3 style="color: #667eea; margin-top: 20px;">Part 3: Optical Illusions</h3>
-                    <div class="checklist-item">✓ 3.1 Visual anagrams implementation (2 illusions)</div>
-                    <div class="checklist-item">✓ 3.2 Hybrid images with frequency decomposition (2 images)</div>
+                    <h3 style="color: #667eea; margin-top: 20px;">Part 1.8: Visual Anagrams</h3>
+                    <div class="checklist-item">✓ 1.8 Visual anagrams (2 illusions)</div>
 
-                    <h3 style="color: #667eea; margin-top: 20px;">Bells & Whistles (CS 280A Only)</h3>
-                    <div class="checklist-item">✓ Additional visual anagrams with rotation transformation</div>
-                    <div class="checklist-item">✓ Additional visual anagrams with horizontal flip</div>
+                    <h3 style="color: #667eea; margin-top: 20px;">Part 1.9: Hybrid Images</h3>
+                    <div class="checklist-item">✓ 1.9 Hybrid images with frequency decomposition (2 images)</div>
+
+                    <h3 style="color: #667eea; margin-top: 20px;">Part 2: Bells & Whistles (CS 280A Only)</h3>
+                    <div class="checklist-item">✓ Visual anagrams with negatives</div>
                     <div class="checklist-item">✓ UC Berkeley course logo design</div>
                 </div>
             </section>
@@ -1212,8 +770,7 @@
         </div>
 
         <footer>
-            <p>Diffusion Models Part A | CS 280 Deep Learning on Images | UC Berkeley</p>
-            <p style="margin-top: 10px; opacity: 0.7; font-size: 0.9em;">Due: November 25, 2025</p>
+            <p>Project 5 Part A</p>
         </footer>
     </div>
 </body>
