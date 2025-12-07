@@ -31,7 +31,7 @@ Manual and automatic image stitching using homography estimation, feature detect
 - Cylindrical warping for wide field-of-view stitching
 
 ### [Project 4: Neural Radiance Fields (NeRF)](https://joshua-sun-compsci.github.io/cs280a/4/index.html)
-3D scene reconstruction from multi-view images using machine learning, ray sampling, and volumetric rendering techniques.
+3D scene reconstruction from multi-view images using machine learning, positional encoding, and volumetric rendering techniques.
 
 **Key Techniques:** NeRF • PyTorch • Machine Learning • Volumetric Rendering
 - Multi-view camera calibration with ArUco markers
