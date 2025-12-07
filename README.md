@@ -4,7 +4,7 @@ A comprehensive collection of computer vision projects exploring fundamental and
 
 ## 🎯 Projects
 
-### [Project 1: Prokudin-Gorskii Colorizing](./1/index.html)
+### [Project 1: Prokudin-Gorskii Colorizing](https://joshua-sun-compsci.github.io/cs280a/1/index.html)
 Automatic color image recovery from digitized glass plate photographs using multi-scale pyramid search technique.
 
 **Key Techniques:** Image Alignment • Normalized Cross-Correlation (NCC) • Pyramid Search • Image Enhancement
@@ -12,7 +12,7 @@ Automatic color image recovery from digitized glass plate photographs using mult
 - Automatic contrast, white balance, and color correction
 - Canny edge-based feature matching for robust alignment
 
-### [Project 2: Fun with Filters & Frequencies](./2/index.html)
+### [Project 2: Fun with Filters & Frequencies](https://joshua-sun-compsci.github.io/cs280a/2/index.html)
 Explore edge detection, image sharpening, hybrid images, and multiresolution blending using Laplacian stacks.
 
 **Key Techniques:** Convolution • Gaussian Pyramids/Laplacian Stacks • Frequency Filtering • Hybrid Images
@@ -21,7 +21,7 @@ Explore edge detection, image sharpening, hybrid images, and multiresolution ble
 - Unsharp mask for image sharpening
 - Multiresolution blending for seamless image composition
 
-### [Project 3: Image Mosaicing](./3/b/index.html)
+### [Project 3: Image Mosaicing](https://joshua-sun-compsci.github.io/cs280a/3/b/index.html)
 Manual and automatic image stitching using homography estimation, feature detection, and RANSAC for robust alignment.
 
 **Key Techniques:** Homography • RANSAC • Harris Corner Detection • Feature Descriptors
@@ -30,7 +30,7 @@ Manual and automatic image stitching using homography estimation, feature detect
 - 8×8 feature descriptor extraction and matching
 - Cylindrical warping for wide field-of-view stitching
 
-### [Project 4: Neural Radiance Fields (NeRF)](./4/index.html)
+### [Project 4: Neural Radiance Fields (NeRF)](https://joshua-sun-compsci.github.io/cs280a/4/index.html)
 3D scene reconstruction from multi-view images using machine learning, ray sampling, and volumetric rendering techniques.
 
 **Key Techniques:** NeRF • PyTorch • Machine Learning • Volumetric Rendering
@@ -39,7 +39,7 @@ Manual and automatic image stitching using homography estimation, feature detect
 - Full 3D NeRF training on multi-view datasets
 - Novel view synthesis and depth map rendering
 
-### [Project 5: Diffusion Models & Generative AI](./5/a/index.html)
+### [Project 5: Diffusion Models & Generative AI](https://joshua-sun-compsci.github.io/cs280a/5/a/index.html)
 Explore diffusion models for image generation, editing, and synthesis including text-to-image and visual anagrams.
 
 **Key Techniques:** Diffusion Models • Classifier-Free Guidance • SDEdit • Image Inpainting
