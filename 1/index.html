@@ -1,223 +1,603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Project 1 — Prokudin-Gorskii Colorizing</title>
-  <meta name="theme-color" content="#ffffff"/>
-  <style>
-    body {
-      font-family: "Roboto", sans-serif;
-      background: #f9fafb;
-      color: #1f2937;
-      margin: 0;
-      line-height: 1.6;
-    }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 1rem 2rem;
-    }
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    h2 {
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 0.3rem;
-    }
-    section {
-      margin-bottom: 2.5rem;
-    }
-    .result {
-      display: flex;
-      gap: 1rem;
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin-bottom: 1.5rem;
-      align-items: center;
-    }
-    .result img {
-      width: 220px;
-      border-radius: 8px;
-    }
-    footer {
-      text-align: center;
-      color: #6b7280;
-      font-size: 0.9rem;
-      padding: 1rem;
-      border-top: 1px solid #e5e7eb;
-      background: #f3f4f6;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prokudin-Gorskii Colorizing - CS 280A</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        section h4 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        section p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .result {
+            display: flex;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .result:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .result img {
+            width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-title {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .result-detail {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.95em;
+        }
+
+        .reflection-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .reflection-box h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .reflection-box p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .stats-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #667eea30;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-value {
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre;
+        }
+
+        em {
+            color: #667eea;
+            font-style: italic;
+        }
+
+        strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .subsection {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .subsection:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .result {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .result img {
+                width: 100%;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .stat-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-  <h1>Project 1 — Colorizing the Prokudin-Gorskii Collection</h1>
-</header>
+    <div class="container">
+        <header>
+            <h1>🎨 Prokudin-Gorskii Colorizing</h1>
+            <p>CS 280A Project - UC Berkeley</p>
+        </header>
 
-<main>
-  <section>
-    <h2>Overview</h2>
-    <p>
-      The goal of this project is to take the digitized Prokudin-Gorskii glass plate images and automatically produce a color image.
-      The input is a single grayscale plate stacked vertically in the order <strong>B, G, R</strong>.
-      I split the image into three equal parts, then align the <em>G</em> and <em>R</em> channels to <em>B</em>.
-    </p>
-  </section>
+        <div class="content">
+            <!-- OVERVIEW -->
+            <section>
+                <h2>Overview</h2>
+                <p>The goal of this project is to take digitized Prokudin-Gorskii glass plate images and automatically produce color images. The input is a single grayscale plate stacked vertically in the order <strong>B, G, R</strong> (Blue, Green, Red). The approach is to split the image into three equal parts, then align the G and R channels to the B channel using image registration techniques.</p>
 
-  <section>
-    <h2>Single-Scale Alignment</h2>
-    <p>
-      As a baseline, I implemented single-scale alignment using NCC. This method worked surprisingly well after pre-processes the image. The idea is first pre-process the image (see bells&whistles section), then within the [-15,15] pixel range, find the best alignment such that the NCC value is maximized. Blue is used as a reference picture while green and red are moved with (x,y) pixels to align with blue.
-    </p>
-    <div class="result"> 
-      <img src="output/cathedral.jpg" alt="cathedral"/> 
-      <div><strong>cathedral</strong><br>Green offset: (+2, +5)<br>Red offset: (+3, +12)</div> 
-    </div>
-    <div class="result"> 
-      <img src="output/monastery.jpg" alt="monastery"/> 
-      <div><strong>monastery</strong><br>Green offset: (+2, -3)<br>Red offset: (+2, +3)</div> 
-    </div>
-    <div class="result"> 
-      <img src="output/tobolsk.jpg" alt="tobolsk"/> 
-      <div><strong>tobolsk</strong><br>Green offset: (+3, +3)<br>Red offset: (+3, +6)</div> 
-    </div>
-  </section>
+                <div class="card">
+                    <h4>Problem Statement</h4>
+                    <p>Given a vertically stacked grayscale image containing three color channels (B, G, R), recover the full color image by finding the optimal alignment between channels. This is a classic image registration problem from early color photography.</p>
+                </div>
+            </section>
 
-  <section>
-    <h2>Multi-Scale Pyramid Alignment</h2>
-    <p>
-      To handle larger displacements efficiently, I implemented a pyramid search: start at low resolution for coarse alignment, then refine at higher resolutions. NCC is also used here, and the idea is similar: first pre-process the image (see bells&whistles section), then scale down the image by factor of 2 until it is smaller than 200*200 pixel. Then, within the [-15,15] pixel range, find the best alignment such that the NCC value is maximized. After that, use the 2x bigger image and find the best alignment within the [-1,1] range, as these are the only possible pixels after scaling up. Blue is used as a reference picture while green and red are moved with (x,y) pixels to align with blue.
-    </p>
-    <div class="result">
-      <img src="output/emir.jpg" alt="emir"/>
-      <div><strong>emir</strong><br>Green offset: (+23, +49)<br>Red offset: (+40, +107)</div>
-    </div>
-    <div class="result">
-      <img src="output/church.jpg" alt="church"/>
-      <div><strong>church</strong><br>Green offset: (+4, +25)<br>Red offset: (-4, +58)</div>
-    </div>
-    <div class="result">
-      <img src="output/harvesters.jpg" alt="harvesters"/>
-      <div><strong>harvesters</strong><br>Green offset: (+18, +60)<br>Red offset: (+11, +118)</div>
-    </div>
-    <div class="result">
-      <img src="output/icon.jpg" alt="icon"/>
-      <div><strong>icon</strong><br>Green offset: (+16, +38)<br>Red offset: (+22, +90)</div>
-    </div>
-    <div class="result">
-      <img src="output/italil.jpg" alt="italil"/>
-      <div><strong>italil</strong><br>Green offset: (+22, +38)<br>Red offset: (+36, +77)</div>
-    </div>
-    <div class="result">
-      <img src="output/lastochikino.jpg" alt="lastochikino"/>
-      <div><strong>lastochikino</strong><br>Green offset: (-2, -3)<br>Red offset: (-9, +76)</div>
-    </div>
-    <div class="result">
-      <img src="output/lugano.jpg" alt="lugano"/>
-      <div><strong>lugano</strong><br>Green offset: (-17, +41)<br>Red offset: (-29, +93)</div>
-    </div>
-    <div class="result">
-      <img src="output/melons.jpg" alt="melons"/>
-      <div><strong>melons</strong><br>Green offset: (+9, +79)<br>Red offset: (+13, +177)</div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="self_portrait"/>
-      <div><strong>self_portrait</strong><br>Green offset: (+29, +77)<br>Red offset: (+37, +175)</div>
-    </div>
-    <div class="result">
-      <img src="output/siren.jpg" alt="siren"/>
-      <div><strong>siren</strong><br>Green offset: (-5, +48)<br>Red offset: (-23, +96)</div>
-    </div>
-    <div class="result">
-      <img src="output/three_generations.jpg" alt="three_generations"/>
-      <div><strong>three_generations</strong><br>Green offset: (+17, +57)<br>Red offset: (+12, +115)</div>
-    </div>
-  </section>
+            <!-- SINGLE-SCALE ALIGNMENT -->
+            <section>
+                <h2>Single-Scale Alignment</h2>
+                <p>As a baseline, I implemented single-scale alignment using Normalized Cross-Correlation (NCC). This method works surprisingly well after image preprocessing. The approach searches within the [-15, 15] pixel range to find the best alignment that maximizes the NCC value. Blue is used as the reference image while green and red channels are shifted to align with blue.</p>
 
-  <section>
-    <h2>Bells & Whistles</h2>
+                <div class="card">
+                    <h4>Algorithm</h4>
+                    <p>1. Preprocess the image (see Bells & Whistles section)</p>
+                    <p>2. For each channel (G and R):</p>
+                    <p style="margin-left: 20px;">• Search within [-15, 15] pixel displacement range</p>
+                    <p style="margin-left: 20px;">• Compute NCC score for each displacement</p>
+                    <p style="margin-left: 20px;">• Select displacement that maximizes NCC</p>
+                    <p>3. Stack the aligned channels to produce the final color image</p>
+                </div>
 
-    <h3>1. Automatic Contrasting</h3>
-    <p>
-      I remap pixel intensities so the darkest pixel becomes 0 and the brightest becomes 1. This enhances dynamic range and improves visibility, especially in underexposed or flat-looking images. The before and after comparison shows clear difference, thus this is an important feature.
-    </p>
-    <div class="result">
-      <img src="output/self_portrait_no_contrast.jpg" alt="before contrast"/>
-      <div><strong>Before contrast</strong></div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="after contrast"/>
-      <div><strong>After contrast</strong></div>
-    </div>
+                <div class="result">
+                    <img src="output/cathedral.jpg" alt="cathedral">
+                    <div class="result-info">
+                        <div class="result-title">Cathedral</div>
+                        <div class="result-detail">
+                            Green offset: (+2, +5)<br>
+                            Red offset: (+3, +12)
+                        </div>
+                    </div>
+                </div>
 
-    <h3>2. Automatic White Balance</h3>
-    <p>
-      I apply the <em>gray-world assumption</em>: if the average of all colors should be gray, then scale each channel so its mean matches the global mean. This removes strong color casts (e.g., overly blue or yellow images). The result became more realistic, as the overall tone shifted from yellow-ish towards the mean.
-    </p>
-    <div class="result">
-      <img src="output/self_portrait_no_wb.jpg" alt="before wb"/>
-      <div><strong>Before white balance</strong></div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="after wb"/>
-      <div><strong>After white balance</strong></div>
-    </div>
+                <div class="result">
+                    <img src="output/monastery.jpg" alt="monastery">
+                    <div class="result-info">
+                        <div class="result-title">Monastery</div>
+                        <div class="result-detail">
+                            Green offset: (+2, -3)<br>
+                            Red offset: (+2, +3)
+                        </div>
+                    </div>
+                </div>
 
-    <h3>3. Better Color Mapping</h3>
-    <p>
-      To normalize colors, I adjust each channel so the average intensity maps closer to a neutral gray. This reduces bias from one dominant channel and produces more natural-looking results. As shown in the result, before the color mapping, the image seems like it has a "vintage filter" on it. The color mapping successfully removed the "filter", making the picture more realistic.
-    </p>
-    <div class="result">
-      <img src="output/self_portrait_no_cm.jpg" alt="before colormap"/>
-      <div><strong>Before color mapping</strong></div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="after colormap"/>
-      <div><strong>After color mapping</strong></div>
-    </div>
+                <div class="result">
+                    <img src="output/tobolsk.jpg" alt="tobolsk">
+                    <div class="result-info">
+                        <div class="result-title">Tobolsk</div>
+                        <div class="result-detail">
+                            Green offset: (+3, +3)<br>
+                            Red offset: (+3, +6)
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <h3>4. Automatic Cropping</h3>
-    <p>
-      Many plates have thick borders, numbers, or stains. I detect rows/columns with low variance or low mean intensity, compute bounding boxes for each channel, and take their intersection (IoU). This significantly reduces visible borders. However, it is not yet perfect, reasons are explained in the Failure Section below.
-    </p>
-    <div class="result">
-      <img src="output/self_portrait_no_crop.jpg" alt="before crop"/>
-      <div><strong>Before cropping</strong></div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="after crop"/>
-      <div><strong>After cropping</strong></div>
-    </div>
+            <!-- MULTI-SCALE PYRAMID ALIGNMENT -->
+            <section>
+                <h2>Multi-Scale Pyramid Alignment</h2>
+                <p>To handle larger displacements efficiently, I implemented a pyramid search strategy: start at low resolution for coarse alignment, then progressively refine at higher resolutions. The approach scales down the image by factor of 2 until it reaches below 200×200 pixels. At the coarsest level, search within [-15, 15] pixels for maximum NCC. Then progressively upsample and refine alignment within [-1, 1] pixel range, which represents the only possible sub-pixel movements after scaling up.</p>
 
-    <h3>5. Better Features (Canny Edges)</h3>
-    <p>
-      Instead of using raw pixel values with NCC, I align based on <strong>Canny edge maps</strong>. Edges are less sensitive to brightness differences and highlight structural details, making alignment more robust in cases where intensity differs between channels. In this case, both NCC and Canny filter worked perfectly, and the shift turned out to be the same :)
-    </p>
-    <div class="result">
-      <img src="output/self_portrait_ncc.jpg" alt="harvesters edges"/>
-      <div><strong>harvesters (edge features)</strong></div>
-    </div>
-    <div class="result">
-      <img src="output/self_portrait.jpg" alt="icon edges"/>
-      <div><strong>icon (edge features)</strong></div>
-    </div>
-  </section>
+                <div class="reflection-box">
+                    <h5>Pyramid Strategy Benefits</h5>
+                    <p>This coarse-to-fine approach dramatically reduces computational cost and makes the algorithm robust to larger displacements (up to 100+ pixels). The hierarchical search avoids local minima by establishing coarse alignment first.</p>
+                </div>
 
-  <section>
-    <h2>Problems & Failures</h2>
-    <p>
-      The biggest problem I encountered is border detection. I tried multiple methods: detect boarder based on variance, intensity, or gradient, and every combination between these three. However, no matter how hard I try, I cannot detect border perfectly for every image because of the noise on the border (some has numbers on the border, some has stains, etc.). The final approach is to use a mix of all three methods, find the border on each r,g and b image, then find the IoU region as the final result. Although borders are still visible on some images, borders are much smaller than without applying the algorithm.
-    </p>
-  </section>
-</main>
+                <div class="result">
+                    <img src="output/emir.jpg" alt="emir">
+                    <div class="result-info">
+                        <div class="result-title">Emir</div>
+                        <div class="result-detail">
+                            Green offset: (+23, +49)<br>
+                            Red offset: (+40, +107)
+                        </div>
+                    </div>
+                </div>
 
-<footer>
-  <div>Joshua Sun · 280A Project 1</div>
-</footer>
+                <div class="result">
+                    <img src="output/church.jpg" alt="church">
+                    <div class="result-info">
+                        <div class="result-title">Church</div>
+                        <div class="result-detail">
+                            Green offset: (+4, +25)<br>
+                            Red offset: (-4, +58)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/harvesters.jpg" alt="harvesters">
+                    <div class="result-info">
+                        <div class="result-title">Harvesters</div>
+                        <div class="result-detail">
+                            Green offset: (+18, +60)<br>
+                            Red offset: (+11, +118)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/icon.jpg" alt="icon">
+                    <div class="result-info">
+                        <div class="result-title">Icon</div>
+                        <div class="result-detail">
+                            Green offset: (+16, +38)<br>
+                            Red offset: (+22, +90)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/italil.jpg" alt="italil">
+                    <div class="result-info">
+                        <div class="result-title">Italil</div>
+                        <div class="result-detail">
+                            Green offset: (+22, +38)<br>
+                            Red offset: (+36, +77)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/lastochikino.jpg" alt="lastochikino">
+                    <div class="result-info">
+                        <div class="result-title">Lastochikino</div>
+                        <div class="result-detail">
+                            Green offset: (-2, -3)<br>
+                            Red offset: (-9, +76)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/lugano.jpg" alt="lugano">
+                    <div class="result-info">
+                        <div class="result-title">Lugano</div>
+                        <div class="result-detail">
+                            Green offset: (-17, +41)<br>
+                            Red offset: (-29, +93)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/melons.jpg" alt="melons">
+                    <div class="result-info">
+                        <div class="result-title">Melons</div>
+                        <div class="result-detail">
+                            Green offset: (+9, +79)<br>
+                            Red offset: (+13, +177)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/self_portrait.jpg" alt="self_portrait">
+                    <div class="result-info">
+                        <div class="result-title">Self Portrait</div>
+                        <div class="result-detail">
+                            Green offset: (+29, +77)<br>
+                            Red offset: (+37, +175)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/siren.jpg" alt="siren">
+                    <div class="result-info">
+                        <div class="result-title">Siren</div>
+                        <div class="result-detail">
+                            Green offset: (-5, +48)<br>
+                            Red offset: (-23, +96)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result">
+                    <img src="output/three_generations.jpg" alt="three_generations">
+                    <div class="result-info">
+                        <div class="result-title">Three Generations</div>
+                        <div class="result-detail">
+                            Green offset: (+17, +57)<br>
+                            Red offset: (+12, +115)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BELLS & WHISTLES -->
+            <section>
+                <h2>Bells & Whistles: Image Enhancement</h2>
+
+                <!-- 1. Automatic Contrasting -->
+                <div class="subsection">
+                    <h3>1. Automatic Contrasting</h3>
+                    <p>I remap pixel intensities so the darkest pixel becomes 0 and the brightest becomes 255. This enhances dynamic range and improves visibility, especially in underexposed or flat-looking images. The before-and-after comparison shows a dramatic difference.</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="output/self_portrait_no_contrast.jpg" alt="before contrast">
+                            <div class="comparison-label">Before Contrast Enhancement</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="output/self_portrait.jpg" alt="after contrast">
+                            <div class="comparison-label">After Contrast Enhancement</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Automatic White Balance -->
+                <div class="subsection">
+                    <h3>2. Automatic White Balance</h3>
+                    <p>I apply the <em>gray-world assumption</em>: the average of all color channels should be neutral gray. Each channel is scaled so its mean matches the global mean, removing strong color casts (overly blue or yellow images). This produces more realistic colors by shifting the overall tone toward a neutral state.</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="output/self_portrait_no_wb.jpg" alt="before wb">
+                            <div class="comparison-label">Before White Balance</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="output/self_portrait.jpg" alt="after wb">
+                            <div class="comparison-label">After White Balance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Better Color Mapping -->
+                <div class="subsection">
+                    <h3>3. Better Color Mapping</h3>
+                    <p>To normalize colors more effectively, I adjust each channel so the average intensity maps closer to neutral gray. This reduces bias from one dominant channel and produces more natural-looking results. Before color mapping, images often appear as if they have a vintage filter applied. The color mapping successfully removes this filter, making pictures more realistic.</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="output/self_portrait_no_cm.jpg" alt="before colormap">
+                            <div class="comparison-label">Before Color Mapping</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="output/self_portrait.jpg" alt="after colormap">
+                            <div class="comparison-label">After Color Mapping</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Automatic Cropping -->
+                <div class="subsection">
+                    <h3>4. Automatic Cropping</h3>
+                    <p>Many glass plates have thick borders, numbers, or stains. I detect rows/columns with low variance or low mean intensity, compute bounding boxes for each channel, and take their intersection (IoU). This significantly reduces visible borders. However, as noted in the Failure section, border detection is not yet perfect due to inherent noise and artifacts on the plates.</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="output/self_portrait_no_crop.jpg" alt="before crop">
+                            <div class="comparison-label">Before Cropping</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="output/self_portrait.jpg" alt="after crop">
+                            <div class="comparison-label">After Cropping</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Better Features (Canny Edges) -->
+                <div class="subsection">
+                    <h3>5. Better Features — Canny Edge Detection</h3>
+                    <p>Instead of using raw pixel values with NCC, I align based on <strong>Canny edge maps</strong>. Edges are less sensitive to brightness differences and highlight structural details, making alignment more robust when intensity differs between channels. For many images, both NCC and Canny approaches yield identical results, confirming the robustness of the method.</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="output/self_portrait_ncc.jpg" alt="harvesters edges">
+                            <div class="comparison-label">Harvesters (Edge Features)</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="output/self_portrait.jpg" alt="icon edges">
+                            <div class="comparison-label">Icon (Edge Features)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROBLEMS & FAILURES -->
+            <section>
+                <h2>Problems & Failures</h2>
+                <p>The biggest challenge I encountered is automatic border detection. I tried multiple approaches: detecting borders based on variance, intensity, gradient, and various combinations of these three metrics. However, no single method reliably detects borders across all images, primarily because plates contain various artifacts—numbers printed on borders, stains, dust marks, and uneven illumination.</p>
+
+                <div class="reflection-box">
+                    <h5>Border Detection Strategy</h5>
+                    <p>My final approach combines all three methods (variance, intensity, and gradient) to detect borders independently on each R, G, and B channel. The final result uses the intersection (IoU) region across all three channels. While borders are still visible on some images, they are substantially smaller than without any border detection algorithm applied.</p>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Prokudin-Gorskii Colorizing | CS 280A | UC Berkeley</p>
+        </footer>
+    </div>
 </body>
 </html>

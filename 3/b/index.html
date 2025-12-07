@@ -2,323 +2,701 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Mosaicing Assignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Mosaicing Assignment - CS 280A</title>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
         }
-        h1, h2, h3 {
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
             text-align: center;
         }
-        img {
-            max-width: 100%;
-            display: block;
-            margin: 10px auto;
-            box-shadow: 0 0 8px rgba(0,0,0,0.3);
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-        .image-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
         }
-        .image-container {
-            flex: 1 1 30%;
-            text-align: center;
+
+        .content {
+            padding: 40px;
         }
-        .caption {
-            font-size: 0.9em;
-            margin-top: 5px;
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        section p {
             color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
         }
-        pre {
-            background-color: #f4f4f4;
-            padding: 10px;
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .image-container {
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .image-label {
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .comparison-grid.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.95em;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .stats-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #667eea30;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-value {
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
             overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .reflection-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .reflection-box h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .reflection-box p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .achievement-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .achievement-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        ul {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        ul li {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        ul li strong {
+            color: #667eea;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .fun-fact {
+            background: #fff9e6;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+
+        .fun-fact p {
+            color: #856404;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4, .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid.two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .stat-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>CS280A Image Mosaicing Assignment</h1>
+    <div class="container">
+        <header>
+            <h1>📸 Image Mosaicing</h1>
+            <p>CS 280A Project - UC Berkeley</p>
+        </header>
 
-    <h2>A.1: Shoot and Digitize Pictures</h2>
-    <p>Two sets of pictures were taken for mosaicing:</p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="home_l.jpg" alt="Set 1 Image 1">
-            <div class="caption">Set 1 - Image 1</div>
-        </div>
-        <div class="image-container">
-            <img src="home_r.jpg" alt="Set 1 Image 2">
-            <div class="caption">Set 1 - Image 2</div>
-        </div>
-    </div>
+        <div class="content">
+            <!-- PART A -->
+            <section>
+                <h2>Part A: Manual Image Stitching</h2>
 
-    <div class="image-row">
-        <div class="image-container">
-            <img src="lobby_l.jpg" alt="Set 2 Image 1">
-            <div class="caption">Set 2 - Image 1</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_m.jpg" alt="Set 2 Image 2">
-            <div class="caption">Set 2 - Image 2</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_r.jpg" alt="Set 2 Image 3">
-            <div class="caption">Set 2 - Image 3</div>
-        </div>
-    </div>
+                <!-- A.1 -->
+                <section>
+                    <h3>A.1: Shoot and Digitize Pictures</h3>
+                    <p>Two sets of pictures were captured for manual mosaicing:</p>
+                    
+                    <h4>Set 1: Home</h4>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="home_l.jpg" alt="Set 1 Image 1">
+                            <div class="comparison-label">Image 1</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="home_r.jpg" alt="Set 1 Image 2">
+                            <div class="comparison-label">Image 2</div>
+                        </div>
+                    </div>
 
-    <h2>A.2: Recover Homographies</h2>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="home_pts.png" alt="Point Correspondences Set 1">
-            <div class="caption">Point correspondences for Set 1</div>
-        </div>
-    </div>
-    <p>
-        To estimate the homography matrix <strong>H</strong>, we form a system of linear equations
-        from corresponding points between two images. Each pair of correspondences 
-        <em>(xₙ, yₙ) → (uₙ, vₙ)</em> contributes two equations to the system:
-    </p>
+                    <h4>Set 2: Lobby</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="lobby_l.jpg" alt="Set 2 Image 1">
+                            <div class="comparison-label">Image 1</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="lobby_m.jpg" alt="Set 2 Image 2">
+                            <div class="comparison-label">Image 2</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="lobby_r.jpg" alt="Set 2 Image 3">
+                            <div class="comparison-label">Image 3</div>
+                        </div>
+                    </div>
+                </section>
 
-    <pre><code>
-A = [x₁, y₁, 1, 0, 0, 0, -x₁u₁, -y₁u₁],
-    [0, 0, 0, x₁, y₁, 1, -x₁v₁, -y₁v₁],
-    [x₂, y₂, 1, 0, 0, 0, -x₂u₂, -y₂u₂],
-    [0, 0, 0, x₂, y₂, 1, -x₂v₂, -y₂v₂],
-    [x₃, y₃, 1, 0, 0, 0, -x₃u₃, -y₃u₃],
-    [0, 0, 0, x₃, y₃, 1, -x₃v₃, -y₃v₃],
-    [x₄, y₄, 1, 0, 0, 0, -x₄u₄, -y₄u₄],
-    [0, 0, 0, x₄, y₄, 1, -x₄v₄, -y₄v₄]
+                <!-- A.2 -->
+                <section>
+                    <h3>A.2: Recover Homographies</h3>
+                    <p>To estimate the homography matrix <strong>H</strong>, we form a system of linear equations from corresponding points between two images. Each pair of correspondences <em>(xₙ, yₙ) → (uₙ, vₙ)</em> contributes two equations to the system:</p>
 
-b = [u₁],
-    [v₁],
-    [u₂],
-    [v₂],
-    [u₃],
-    [v₃],
-    [u₄],
-    [v₄]
-    </code></pre>
+                    <div class="image-container">
+                        <img src="home_pts.png" alt="Point Correspondences Set 1">
+                        <div class="image-label">Point correspondences for Set 1</div>
+                    </div>
 
-    <p>
-        The equation <strong>A · h = b</strong> is solved using least squares, where 
-        <em>h</em> is the 8-dimensional vector representing the entries of the homography matrix
-        (the 9th value is fixed to 1 for scale). The resulting 3×3 matrix <strong>H</strong> 
-        maps points from the first image to the second.
-    </p>
-    <div class="image-container">
-            <pre>
-H1 = [[1.447739337700669759e+00, 4.322275120828126399e-02, -1.284721206179840181e+02],
-    [2.744618702282577427e-01, 1.298791600810339952e+00, -2.613941193162229837e+01],
-    [2.110015892463942399e-03, 1.444242532437192534e-05, 1.000000000000000000e+00]]
-            </pre>
-        <div class="caption">Homography matrix for Set 1</div>
-    </div>
+                    <div class="card">
+                        <h4>Homography Equations</h4>
+                        <p>Each correspondence pair provides two linear constraints. With at least 4 point pairs, we can solve for the 8 degrees of freedom in the homography matrix (the 9th value is fixed to 1 for scale normalization).</p>
+                    </div>
 
-    <h2>A.3: Warp the Images</h2>
-    <h3>Nearest Neighbor vs Bilinear Interpolation</h3>
-    <p>Comparison of Nearest Neighbor vs Bilinear: NN is faster but blockier; BI is smoother but may produce minor color holes.</p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="lobby_warp.png" alt="Warped NN+BI Set 2">
-            <div class="caption">Warped NN+BI</div>
-        </div>
-    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>Homography Equations</h4>
+                        <p>Each correspondence pair provides two linear constraints. With at least 4 point pairs, we can solve for the 8 degrees of freedom in the homography matrix.</p>
+                        
+                        $$A = \begin{bmatrix}
+                        x_1 & y_1 & 1 & 0 & 0 & 0 & -x_1u_1 & -y_1u_1 \\
+                        0 & 0 & 0 & x_1 & y_1 & 1 & -x_1v_1 & -y_1v_1 \\
+                        x_2 & y_2 & 1 & 0 & 0 & 0 & -x_2u_2 & -y_2u_2 \\
+                        0 & 0 & 0 & x_2 & y_2 & 1 & -x_2v_2 & -y_2v_2 \\
+                        x_3 & y_3 & 1 & 0 & 0 & 0 & -x_3u_3 & -y_3u_3 \\
+                        0 & 0 & 0 & x_3 & y_3 & 1 & -x_3v_3 & -y_3v_3 \\
+                        x_4 & y_4 & 1 & 0 & 0 & 0 & -x_4u_4 & -y_4u_4 \\
+                        0 & 0 & 0 & x_4 & y_4 & 1 & -x_4v_4 & -y_4v_4
+                        \end{bmatrix}$$
+                        
+                        $$\mathbf{b} = [u_1, v_1, u_2, v_2, u_3, v_3, u_4, v_4]^T$$
+                        
+                        $$\text{Solution: } \mathbf{h} = A^{-1} \cdot \mathbf{b}$$
+                    </div>
 
-    <h3>Rectification Example</h3>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="home_l.jpg" alt="Original Image">
-            <div class="caption">Original Image</div>
-        </div>
-        <div class="image-container">
-            <img src="home_warped_bi.png" alt="Warped Bilinear">
-            <div class="caption">Warped Image - Bilinear</div>
-        </div>
-    </div>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="cmu_l.png" alt="Original Image">
-            <div class="caption">Original Image</div>
-        </div>
-        <div class="image-container">
-            <img src="cmu_warped_bi.png" alt="Warped Bilinear">
-            <div class="caption">Warped Image - Bilinear</div>
-        </div>
-    </div>
+                    <div style="display: flex; justify-content: center; margin: 30px 0;">
+                        <div class="image-container" style="max-width: 700px;">
+                            <div class="card" style="text-align: center; border: none; box-shadow: none; padding: 0;">
+                                <h4 style="margin-bottom: 20px;">Homography Matrix for Set 1</h4>
+                                $$H_1 = \begin{bmatrix}
+                                1.4477393377e+00 & 4.3222751208e-02 & -1.2847212062e+02 \\
+                                2.7446187023e-01 & 1.2987916008e+00 & -2.6139411932e+01 \\
+                                2.1100158925e-03 & 1.4442425324e-05 & 1.0000000000e+00
+                                \end{bmatrix}$$
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-    <h2>A.4: Blend the Images into a Mosaic</h2>
-    <p>Procedure to get the Mosaic: First, find the bounding box of the output mosaic by warping the corners of all input images. Then, create an output canvas large enough to hold the entire mosaic. For each input image, warp it into the output canvas using the computed homography and blend it with the existing content using weighted averaging to avoid harsh seams. Finally, normalize the color by the accumulated weights to ensure weighted averaging is implemented properly.</p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="cmu_l.png" alt="CMU Left Picture">
-            <div class="caption">CMU Left Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="cmu_r.png" alt="CMU Right Picture">
-            <div class="caption">CMU Right Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="cmu_mosaic.png" alt="CMU Mosaic Result">
-            <div class="caption">CMU Mosaic Result</div>
-        </div>
-    </div>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="home_l.jpg" alt="Home Left Picture">
-            <div class="caption">Home Left Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="home_r.jpg" alt="Home Right Picture">
-            <div class="caption">Home Right Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="home_mosaic.png" alt="Home Mosaic Result">
-            <div class="caption">Home Mosaic Result</div>
-        </div>
-    </div>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="lobby_l.jpg" alt="Lobby Left Picture">
-            <div class="caption">Lobby Left Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_m.jpg" alt="Lobby Middle Picture">
-            <div class="caption">Lobby Middle Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_r.jpg" alt="Lobby Right Picture">
-            <div class="caption">Lobby Right Picture</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_mosaic.png" alt="Lobby Mosaic Result">
-            <div class="caption">Lobby Mosaic Result</div>
-        </div>
-    </div>
+                <!-- A.3 -->
+                <section>
+                    <h3>A.3: Warp the Images</h3>
+                    
+                    <h4>Interpolation Methods Comparison</h4>
+                    <p>Two interpolation strategies were evaluated:</p>
+                    <div class="stats-box">
+                        <div class="stat-row">
+                            <div class="stat-label">Nearest Neighbor</div>
+                            <div class="stat-value">Faster but blocky artifacts; jagged edges visible at boundaries</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Bilinear</div>
+                            <div class="stat-value">Smoother results; higher quality; minor color holes in rare cases</div>
+                        </div>
+                    </div>
 
-    <h2>A.5: Bells & Whistles (Cylindrical Mapping)</h2>
-    <p>The idea for the cylindrical warp here is simple: Instead of using the homography matrix, warp each image as if they are cylindrical. Use the equations \( x = f \tan(\theta) + c_x \) and \( y = f \frac{h}{\cos(\theta)} + c_y \), where \(f\) is the focal length, \(\theta\) is the viewing angle from the center, and \(c_x\) \(c_y\) are the center coordinates, to find the corresponding pixel in the original image, then use bilinear interpolation to remap the pixels. Then manually adjust f and offset to get the best result.</p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="cmu_cylindrical_mosaic.png" alt="Cylindrical Warp CMU">
-            <div class="caption">Cylindrical Warped CMU</div>
-        </div>
-    </div>
+                    <div class="image-container">
+                        <img src="lobby_warp.png" alt="Warped NN+BI Set 2">
+                        <div class="image-label">Warped images with Nearest Neighbor + Bilinear comparison</div>
+                    </div>
 
-    <h2>B.1: Detecting Corner Features (Harris + ANMS)</h2>
-    <p>
-        We detect corners using the Harris Corner Detector. The resulting corners are then refined
-        using Adaptive Non-Maximal Suppression (ANMS) to select the most spatially well-distributed points. In this example,
-        we select the top 500 corners after ANMS.
-    </p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="ANMS.png" alt="Harris & ANMS Corners">
-            <div class="caption">Harris & ANMS corners detected on image</div>
-        </div>
-    </div>
+                    <h4>Rectification Examples</h4>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="home_l.jpg" alt="Original Image">
+                            <div class="comparison-label">Original</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="home_warped_bi.png" alt="Warped Bilinear">
+                            <div class="comparison-label">Warped (Bilinear)</div>
+                        </div>
+                    </div>
 
-    <h2>B.2: Feature Descriptor Extraction</h2>
-    <p>
-        For each selected corner, we extract an 8×8 feature descriptor sampled from a 40×40 window.
-        Descriptors are normalized (zero mean, unit variance) to be robust to lighting changes.
-    </p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="Descriptors.png" alt="Feature Descriptors">
-            <div class="caption">Example feature descriptors extracted from selected corners</div>
-        </div>
-    </div>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="cmu_l.png" alt="Original Image">
+                            <div class="comparison-label">Original</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="cmu_warped_bi.png" alt="Warped Bilinear">
+                            <div class="comparison-label">Warped (Bilinear)</div>
+                        </div>
+                    </div>
+                </section>
 
-    <h2>B.3: Feature Matching</h2>
-    <p>
-        Feature descriptors are matched between images using squared nearest neighbor distance ratio test.
-        Matches with a ratio below 0.2 (first divided by second nearest neighbor) are considered valid.
-        Note that the paper mentioned 0.1 works the best, but in my case 0.1 only leaves me 5-10 corners
-        left, which is usually not enough to compute a robust homography. I adjusted the number
-        and found out that 0.2 works better in my case.
-    </p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="Feature_Matching.png" alt="Matched Features">
-            <div class="caption">Matched feature points between image pairs</div>
-        </div>
-    </div>
+                <!-- A.4 -->
+                <section>
+                    <h3>A.4: Blend the Images into a Mosaic</h3>
+                    <p>The mosaicing procedure combines multiple warped images through weighted blending:</p>
+                    <ul>
+                        <li><strong>Compute bounding box:</strong> Warp the corners of all input images to find the output canvas size</li>
+                        <li><strong>Create canvas:</strong> Allocate output image large enough to contain all warped images</li>
+                        <li><strong>Warp and blend:</strong> For each input image, warp using computed homography and blend using weighted averaging</li>
+                        <li><strong>Normalize weights:</strong> Divide final color by accumulated weights to ensure proper blending</li>
+                    </ul>
 
-    <h2>B.4: RANSAC for Robust Homography</h2>
-    <p>
-        We implement 4-point RANSAC to estimate robust homographies between image pairs. This allows
-        automatic mosaicing without manual correspondences. Below, we compare manually and automatically
-        stitched mosaics. In general, the automatic mosaics are better in quality to the manual ones
-        because there are less human error involved when selecting points. Note that the automatic CMU mosaic
-        was warped the other way around (right to left) to test the function's robustness, and it worked well 
-        as shown below.
-    </p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="home_mosaic.png" alt="Manual Mosaic Home">
-            <div class="caption">Manual stitching - Mosaic Home</div>
-        </div>
-        <div class="image-container">
-            <img src="home_mosaic_automatic.png" alt="Automatic Mosaic Home">
-            <div class="caption">Automatic stitching - Mosaic Home</div>
-        </div>
-    </div>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="cmu_mosaic.png" alt="Manual Mosaic CMU">
-            <div class="caption">Manual stitching - Mosaic CMU</div>
-        </div>
-        <div class="image-container">
-            <img src="cmu_mosaic_automatic.png" alt="Automatic Mosaic CMU">
-            <div class="caption">Automatic stitching - Mosaic CMU</div>
-        </div>
-    </div>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="lobby_mosaic.png" alt="Manual Mosaic Lobby">
-            <div class="caption">Manual stitching - Mosaic Lobby</div>
-        </div>
-        <div class="image-container">
-            <img src="lobby_mosaic_automatic.png" alt="Automatic Mosaic Lobby">
-            <div class="caption">Automatic stitching - Mosaic Lobby</div>
-        </div>
-    </div>
+                    <h4>Home Mosaic</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="home_l.jpg" alt="Home Left Picture">
+                            <div class="comparison-label">Left Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="home_r.jpg" alt="Home Right Picture">
+                            <div class="comparison-label">Right Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="home_mosaic.png" alt="Home Mosaic Result">
+                            <div class="comparison-label">Mosaic Result</div>
+                        </div>
+                    </div>
 
-    <h2>B.5: Bells & Whistles - Multiscale Processing</h2>
-    <p>
-        We enhanced corner detection and feature description using multiscale processing. Corners are
-        detected at multiple image scales, and descriptors are extracted from the corresponding scale.
-        The idea is to have multiple level image pyramids, detect the harris corners at each level,
-        and combine all level's harris corners. This detects corners at all levels, making image scaling
-        invariant to finding corners, and improves matching robustness.
-    </p>
-    <div class="image-row">
-        <div class="image-container">
-            <img src="Multiscale_Points.png" alt="Multiscale Harris Corners">
-            <div class="caption">Harris corners detected at multiple scales</div>
+                    <h4>CMU Mosaic</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="cmu_l.png" alt="CMU Left Picture">
+                            <div class="comparison-label">Left Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="cmu_r.png" alt="CMU Right Picture">
+                            <div class="comparison-label">Right Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="cmu_mosaic.png" alt="CMU Mosaic Result">
+                            <div class="comparison-label">Mosaic Result</div>
+                        </div>
+                    </div>
+
+                    <h4>Lobby Mosaic</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="lobby_l.jpg" alt="Lobby Left Picture">
+                            <div class="comparison-label">Left Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="lobby_m.jpg" alt="Lobby Middle Picture">
+                            <div class="comparison-label">Middle Image</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="lobby_r.jpg" alt="Lobby Right Picture">
+                            <div class="comparison-label">Right Image</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; margin: 30px 0;">
+                        <div class="image-container" style="max-width: 600px;">
+                            <img src="lobby_mosaic.png" alt="Lobby Mosaic Result">
+                            <div class="image-label">Lobby Mosaic Result</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- A.5 -->
+                <section>
+                    <h3>A.5: Bells & Whistles — Cylindrical Mapping</h3>
+                    <p>Instead of using planar homography, we warp each image as if they were captured on a cylindrical surface. This reduces distortion for wide field-of-view scenes.</p>
+
+                   <div class="card">
+                        <h4>Cylindrical Warp Equations</h4>
+                        <p>For each pixel at coordinate (u, v) in the original image, we compute its position on a cylinder:</p>
+                        
+                        $$x = f \cdot \tan(\theta) + c_x$$
+                        $$y = f \cdot \frac{h}{\cos(\theta)} + c_y$$
+                        
+                        <p>where <em>f</em> is the focal length, <em>θ</em> is the viewing angle from center, and <em>(c_x, c_y)</em> are center offsets. Bilinear interpolation maps pixels to the warped coordinates, with manual tuning of focal length and offset for best results.</p>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; margin: 30px 0;">
+                        <div class="image-container" style="max-width: 600px;">
+                            <img src="cmu_cylindrical_mosaic.png" alt="Cylindrical Warp CMU">
+                            <div class="image-label">Cylindrical warped mosaic — CMU scene</div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- PART B -->
+            <section>
+                <h2>Part B: Automatic Feature-Based Stitching</h2>
+
+                <!-- B.1 -->
+                <section>
+                    <h3>B.1: Detecting Corner Features (Harris + ANMS)</h3>
+                    <p>We detect corners using the Harris Corner Detector, which identifies regions with high intensity variation in multiple directions. The resulting corners are refined using Adaptive Non-Maximal Suppression (ANMS) to select the most spatially well-distributed points, keeping the top 500 corners.</p>
+
+                    <div class="image-container">
+                        <img src="ANMS.png" alt="Harris & ANMS Corners">
+                        <div class="image-label">Harris corner detection with ANMS refinement</div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Harris Corner Detector</h5>
+                        <p>The Harris detector computes the autocorrelation matrix <strong>M</strong> of image gradients at each pixel and identifies corners where both eigenvalues are large, indicating high variation in two orthogonal directions.</p>
+                    </div>
+                </section>
+
+                <!-- B.2 -->
+                <section>
+                    <h3>B.2: Feature Descriptor Extraction</h3>
+                    <p>For each detected corner, we extract an 8×8 feature descriptor sampled from a 40×40 neighborhood window. Descriptors are normalized (zero mean, unit variance) to achieve robustness against lighting variations and small affine transformations.</p>
+
+                    <div class="image-container">
+                        <img src="Descriptors.png" alt="Feature Descriptors">
+                        <div class="image-label">Example feature descriptors extracted from detected corners</div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Descriptor Properties</h4>
+                        <p>• Sampling: 8×8 patches from 40×40 windows provides scale invariance</p>
+                        <p>• Normalization: Zero-mean, unit-variance ensures lighting invariance</p>
+                        <p>• Compact representation: 64-dimensional feature vector per corner</p>
+                    </div>
+                </section>
+
+                <!-- B.3 -->
+                <section>
+                    <h3>B.3: Feature Matching</h3>
+                    <p>Feature descriptors are matched between image pairs using the squared nearest neighbor distance ratio test. Matches are accepted if the ratio of the first to second nearest neighbor distance is below a threshold.</p>
+
+                    <div class="image-container">
+                        <img src="Feature_Matching.png" alt="Matched Features">
+                        <div class="image-label">Matched feature points between image pairs</div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Matching Threshold Tuning</h5>
+                        <p>The original Lowe's paper recommends a ratio threshold of 0.1. However, this left only 5-10 valid matches in our test cases—insufficient for robust homography estimation. Through empirical tuning, we found that <strong>0.2</strong> provides a better balance, yielding 20-40 matches while maintaining acceptable precision.</p>
+                    </div>
+                </section>
+
+                <!-- B.4 -->
+                <section>
+                    <h3>B.4: RANSAC for Robust Homography</h3>
+                    <p>We implement 4-point RANSAC to robustly estimate homographies from noisy feature matches. This enables fully automatic mosaicing without manual point selection. Below, we compare manually-selected and automatically-matched results on three scenes.</p>
+
+                    <h4>Home Scene</h4>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="home_mosaic.png" alt="Manual Mosaic Home">
+                            <div class="comparison-label">Manual Selection</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="home_mosaic_automatic.png" alt="Automatic Mosaic Home">
+                            <div class="comparison-label">Automatic (RANSAC)</div>
+                        </div>
+                    </div>
+
+                    <h4>CMU Scene</h4>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="cmu_mosaic.png" alt="Manual Mosaic CMU">
+                            <div class="comparison-label">Manual Selection</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="cmu_mosaic_automatic.png" alt="Automatic Mosaic CMU">
+                            <div class="comparison-label">Automatic (RANSAC)</div>
+                        </div>
+                    </div>
+
+                    <h4>Lobby Scene</h4>
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="lobby_mosaic.png" alt="Manual Mosaic Lobby">
+                            <div class="comparison-label">Manual Selection</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="lobby_mosaic_automatic.png" alt="Automatic Mosaic Lobby">
+                            <div class="comparison-label">Automatic (RANSAC)</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Quality Comparison</h5>
+                        <p>The automatic mosaic results are generally superior to manual stitching because they avoid human error in point selection. Notably, the CMU automatic mosaic was computed with right-to-left warping (reverse of manual) to test robustness—the algorithm handled this gracefully, demonstrating its generality.</p>
+                    </div>
+                </section>
+
+                <!-- B.5 -->
+                <section>
+                    <h3>B.5: Bells & Whistles — Multiscale Processing</h3>
+                    <p>We enhanced corner detection and feature matching through multiscale processing. Harris corners are detected at multiple image pyramid levels, and descriptors are extracted from the corresponding scale. This approach improves scale invariance and matching robustness.</p>
+
+                    <div class="comparison-grid two-col">
+                        <div class="comparison-item">
+                            <img src="Multiscale_Points.png" alt="Multiscale Harris Corners">
+                            <div class="comparison-label">Harris corners at multiple scales</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="Multiscale_Descriptors.png" alt="Multiscale Feature Matches">
+                            <div class="comparison-label">Feature matches with multiscale descriptors</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h4>Multiscale Benefits</h4>
+                        <p>• Detects corners at all image resolutions for scale-invariant detection</p>
+                        <p>• Improves matching robustness across images with different content scales</p>
+                        <p>• Enables better handling of zoom variations between captures</p>
+                    </div>
+                </section>
+            </section>
+
+            <!-- PERSONAL NOTE -->
+            <section>
+                <div class="fun-fact">
+                    <p>🎓 <strong>Fun Fact:</strong> I used CMU pictures for both Part A and Part B because I attended a high school summer session there (and also because I was too lazy to shoot another set of pictures 😄). It was arguably one of the best six weeks of my life—that's when I knew I wanted to study computer science! If I remember correctly, there was a Chinese restaurant right below the CMU scene, and it was my favorite lunch spot back then! 🥡</p>
+                </div>
+            </section>
         </div>
-        <div class="image-container">
-            <img src="Multiscale_Descriptors.png" alt="Multiscale Feature Matches">
-            <div class="caption">Feature matches with multiscale descriptors</div>
-        </div>
+
+        <footer>
+            <p>Image Mosaicing Project | CS 280A | UC Berkeley</p>
+        </footer>
     </div>
-
-    <p>
-        Fun fact: I used CMU pictures for both part A and B because I went there for a high school 
-        summer session before (also because I am too lazy to take another set of pictures lol),
-        and it was arguable one of the best six weeks of my life; I knew I wanted to study computer science
-        since then. If I remembered it right, the place right below the CMU picture was 
-        a Chinese resterant and it was my favorite place to have lunch XD
-    </p>
-
-
 </body>
 </html>
