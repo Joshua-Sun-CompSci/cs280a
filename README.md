@@ -1,4 +1,4 @@
-# CS 280A: Computer Vision Portfolio
+# [CS 280A: Computer Vision Portfolio](https://joshua-sun-compsci.github.io/cs280a/)
 
 A comprehensive collection of computer vision projects exploring fundamental and advanced techniques in image processing, 3D reconstruction, and generative AI.
 
