@@ -39,7 +39,7 @@ Manual and automatic image stitching using homography estimation, feature detect
 - Full 3D NeRF training on multi-view datasets
 - Novel view synthesis and depth map rendering
 
-### [Project 5: Diffusion Models & Generative AI](https://joshua-sun-compsci.github.io/cs280a/5/a/index.html)
+### [Project 5A: Diffusion Models & Generative AI](https://joshua-sun-compsci.github.io/cs280a/5/a/index.html)
 Explore diffusion models for image generation, editing, and synthesis including text-to-image and visual anagrams.
 
 **Key Techniques:** Diffusion Models • Classifier-Free Guidance • SDEdit • Image Inpainting
@@ -47,6 +47,15 @@ Explore diffusion models for image generation, editing, and synthesis including 
 - Iterative denoising with and without text conditioning
 - Image-to-image translation and style transfer
 - Visual anagrams and hybrid image generation
+
+### [Project 5B: Flow Matching from Scratch](https://joshua-sun-compsci.github.io/cs280a/5/b/index.html)
+Train flow matching models on MNIST with time and class conditioning for iterative image generation.
+
+**Key Techniques:** Flow Matching • Time Conditioning • Class Conditioning • Classifier-Free Guidance
+- Single-step vs iterative denoising comparison
+- Time-conditioned UNet architecture
+- Class-guided generation with one-hot encoding
+- Removal of learning rate scheduler with fixed tuning
 
 ## 📋 Technical Highlights
 
@@ -63,14 +72,6 @@ Each project folder contains:
 - `index.html` — Interactive project report with visualizations
 - Results and comparisons
 - Bells & whistles
-
-To view the portfolio:
-```bash
-# Simply open the portfolio page in a browser
-open portfolio_index.html
-```
-
-Or navigate to each project individually via the links above.
 
 ## 🎓 Course Information
 
