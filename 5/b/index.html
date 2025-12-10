@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Matching from Scratch - CS 280A</title>
+    <script>
+    MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        section h4 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        section p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .subsection {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .subsection:last-child {
+            border-bottom: none;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .image-container {
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .image-label {
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.95em;
+        }
+
+        .reflection-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .reflection-box h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .reflection-box p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .stats-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #667eea30;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-value {
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre;
+        }
+
+        em {
+            color: #667eea;
+            font-style: italic;
+        }
+
+        strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        ul {
+            margin: 15px 0 15px 40px;
+            line-height: 1.8;
+        }
+
+        ul li {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .achievement-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .stat-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 Flow Matching from Scratch</h1>
+            <p>CS 280A Project - UC Berkeley</p>
+        </header>
+
+        <div class="content">
+            <!-- OVERVIEW -->
+            <section>
+                <h2>Overview</h2>
+                <p>This project explores generative modeling through flow matching on MNIST. We start with a simple one-step denoiser, then progress to time-conditioned and class-conditioned UNets for iterative image generation. The core idea is to learn a velocity field that transforms noise into realistic images.</p>
+
+                <div class="card">
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>Denoising:</strong> Training a network to remove noise from images</li>
+                        <li><strong>Flow Matching:</strong> Learning a velocity field from noisy to clean data</li>
+                        <li><strong>Time Conditioning:</strong> Injecting timestep information into the network</li>
+                        <li><strong>Class Conditioning:</strong> Controlling generation with class labels</li>
+                        <li><strong>Classifier-Free Guidance:</strong> Improving quality through guidance strength</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- PART 1 -->
+            <section>
+                <h2>Part 1: Single-Step Denoising UNet</h2>
+
+                <!-- 1.1 -->
+                <div class="subsection">
+                    <h3>1.1: UNet Architecture</h3>
+                    <p>We implement a UNet consisting of downsampling and upsampling blocks with skip connections. The architecture uses standard operations:</p>
+
+                    <div class="card">
+                        <h4>UNet Operations</h4>
+                        <ul>
+                            <li><strong>Conv:</strong> Convolutional layer preserving resolution, changing channels</li>
+                            <li><strong>DownConv:</strong> 2× downsampling convolutional layer</li>
+                            <li><strong>UpConv:</strong> 2× upsampling transposed convolutional layer</li>
+                            <li><strong>Flatten:</strong> Average pooling from 7×7 to 1×1</li>
+                            <li><strong>Unflatten:</strong> Upsampling from 1×1 to 7×7</li>
+                            <li><strong>Concat:</strong> Channel-wise concatenation with skip connections</li>
+                        </ul>
+                    </div>
+
+                    <p>The hidden dimension is set to D = 128 for learning capacity. Skip connections preserve spatial information through downsampling/upsampling stages.</p>
+                </div>
+
+                <!-- 1.2 -->
+                <div class="subsection">
+                    <h3>1.2: Training Single-Step Denoiser</h3>
+                    <p>Given a clean image x<sub>1</sub>, we generate noisy training pairs using:</p>
+
+                    $$x_t = x_0 + \sigma \cdot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)$$
+
+                    <p>where sigma controls noise level. The network learns to map noisy images back to clean ones using L2 loss.</p>
+
+                    <h4>1.2.0: Noise Visualization</h4>
+                    <div class="image-container">
+                        <img src="1_2_0.png" alt="Noising process visualization">
+                        <div class="image-label">Visualization of noising process with increasing sigma values</div>
+                    </div>
+
+                    <h4>1.2.1: Training Results</h4>
+                    <div class="stats-box">
+                        <div class="stat-row">
+                            <div class="stat-label">Dataset:</div>
+                            <div class="stat-value">MNIST training set (60,000 images)</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Batch Size:</div>
+                            <div class="stat-value">256</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Epochs:</div>
+                            <div class="stat-value">5</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Optimizer:</div>
+                            <div class="stat-value">Adam, lr = 1e-4</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Noise Level:</div>
+                            <div class="stat-value">sigma = 0.5</div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="1_2_1_epoch_1.png" alt="Epoch 1 denoising">
+                            <div class="comparison-label">Epoch 1</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="1_2_1_epoch_5.png" alt="Epoch 5 denoising">
+                            <div class="comparison-label">Epoch 5</div>
+                        </div>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="1_2_1_loss.png" alt="Training loss curve">
+                        <div class="image-label">Training loss over iterations</div>
+                    </div>
+
+                    <h4>1.2.2: Out-of-Distribution Testing</h4>
+                    <p>The model was trained on sigma=0.5 but we evaluate on varying noise levels to test generalization:</p>
+
+                    <div class="image-container">
+                        <img src="1_2_2.png" alt="OOD noise levels">
+                        <div class="image-label">Denoising at different sigma values</div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Observation</h5>
+                        <p>The denoiser performs well near sigma=0.5 (training condition) but degrades at extreme noise levels. This demonstrates that the model learned task-specific solutions rather than generalizable denoising principles.</p>
+                    </div>
+
+                    <h4>1.2.3: Denoising Pure Noise</h4>
+                    <p>We retrain the model to denoise pure Gaussian noise (x₀ = noise), effectively turning this into a generative task:</p>
+
+                    <div class="image-container">
+                        <img src="1_2_3_loss.png" alt="Pure noise loss curve">
+                        <div class="image-label">Training loss over iterations</div>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="1_2_3_epoch_1.png" alt="Epoch 1 generated samples">
+                            <div class="comparison-label">Epoch 1</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="1_2_3_epoch_5.png" alt="Epoch 5 generated samples">
+                            <div class="comparison-label">Epoch 5</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Pure Noise Denoising Analysis</h5>
+                        <p><strong>Patterns Observed:</strong> The model generates blurry digit-like shapes but lacking details.</p>
+                        <p><strong>Why This Happens:</strong> With MSE loss, the network learns to predict the centroid/mean of all training images. When trained to denoise pure noise, it averages out all digits into a single indistinct blob. This is the fundamental limitation of one-step denoising for generation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PART 2 -->
+            <section>
+                <h2>Part 2: Flow Matching & Time-Conditioned Generation</h2>
+
+                <p>To improve generation quality, we transition to iterative denoising using flow matching. The key insight is to learn a velocity field that continuously transforms noise into clean data.</p>
+
+                <!-- 2.1 -->
+                <div class="subsection">
+                    <h3>2.1: Time Conditioning</h3>
+                    <p>We inject scalar timestep t into the UNet using fully-connected blocks (FCBlocks). For each FCBlock layer:</p>
+
+                    $$\text{FCBlock}: t \rightarrow [F_{\text{hidden}}] \rightarrow F_{\text{out}}$$
+
+                    <p>The embedding is applied through element-wise multiplication at key points in the network (unflatten and up1 layers), modulating the denoiser's behavior across different noise levels.</p>
+                </div>
+
+                <!-- 2.2 -->
+                <div class="subsection">
+                    <h3>2.2: Training Time-Conditioned UNet</h3>
+                    
+                    <div class="stats-box">
+                        <div class="stat-row">
+                            <div class="stat-label">Dataset:</div>
+                            <div class="stat-value">MNIST training set (shuffled)</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Batch Size:</div>
+                            <div class="stat-value">64</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Hidden Dimension:</div>
+                            <div class="stat-value">D = 64</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Optimizer:</div>
+                            <div class="stat-value">Adam, lr = 1e-2</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">LR Scheduler:</div>
+                            <div class="stat-value">ExponentialLR, $ \gamma = 0.1^{\frac{1.0}{\text{num epochs}}} $</div>
+                        </div>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="2_2.png" alt="Training loss">
+                        <div class="image-label">Time-conditioned UNet training loss curve</div>
+                    </div>
+                </div>
+
+                <!-- 2.3 -->
+                <div class="subsection">
+                    <h3>2.3: Sampling & Generation Results</h3>
+                    <p>Using the trained model, we iteratively denoise pure noise to generate MNIST digits. Sample quality improves significantly over training epochs:</p>
+
+                    <div class="grid-3">
+                        <div class="image-container">
+                            <img src="2_3_epoch_1.png" alt="Epoch 1">
+                            <div class="image-label">Epoch 1</div>
+                        </div>
+                        <div class="image-container">
+                            <img src="2_3_epoch_5.png" alt="Epoch 5">
+                            <div class="image-label">Epoch 5</div>
+                        </div>
+                        <div class="image-container">
+                            <img src="2_3_epoch_10.png" alt="Epoch 10">
+                            <div class="image-label">Epoch 10</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Generation Quality</h5>
+                        <p>While results show clear digit structures, they lack fine details compared to training data. This is expected given the simplified model and limited training time. Iterative denoising is fundamentally more powerful than one-step approaches.</p>
+                    </div>
+
+                    <!-- Bells & Whistles for 2.3 -->
+                    <h4>Bells & Whistles: Improving Time-Conditioned UNet</h4>
+                    <p>The basic time-conditioned model produces reasonable but imperfect results. We implement several improvements:</p>
+
+                    <div class="card">
+                        <h4>Improvement 1: Extended Training Schedule</h4>
+                        <p><strong>Approach:</strong> Train for 20 epochs instead of 10, allowing the network more opportunities to refine weights.</p>
+                        <p><strong>Result:</strong> Smoother generation with better digit structure and reduced artifacts.</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Improvement 2: Increased Sampling Steps</h4>
+                        <p><strong>Approach:</strong> Increase sampling timesteps from 50 to 100 for finer iterative refinement during generation.</p>
+                        <p><strong>Result:</strong> Higher quality generated images with smoother transitions between noise levels.</p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="2_3_epoch_10.png" alt="Original 10 epochs">
+                            <div class="comparison-label">Original (10 epochs, 50 steps)</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="2_3_bw_epoch_20.png" alt="Improved version">
+                            <div class="comparison-label">Improved (20 epochs, 100 steps)</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Improvement Summary</h5>
+                        <p><strong>Best Result:</strong> Combining extended training (20 epochs) + increased sampling steps (100 timesteps) produces visibly cleaner, more coherent digit generation. More training time and finer-grained denoising steps lead to significantly improved generation quality.</p>
+                    </div>
+
+                <!-- 2.4 & 2.5 -->
+                <div class="subsection">
+                    <h3>2.4-2.5: Class-Conditioned UNet</h3>
+                    <p>We add class conditioning via one-hot vectors with 10% dropout for unconditional guidance capability:</p>
+
+                    <div class="stats-box">
+                        <div class="stat-row">
+                            <div class="stat-label">Class Conditioning:</div>
+                            <div class="stat-value">One-hot vectors [0-9], 10% dropout</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Additional FCBlocks:</div>
+                            <div class="stat-value">2 (fc1_c, fc2_c for class embedding)</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Training Epochs:</div>
+                            <div class="stat-value">10 (faster convergence with guidance)</div>
+                        </div>
+                    </div>
+
+                    <div class="image-container">
+                        <img src="2_5.png" alt="Class conditioned loss">
+                        <div class="image-label">Class-conditioned UNet training loss</div>
+                    </div>
+                </div>
+
+                <!-- 2.6 -->
+                <div class="subsection">
+                    <h3>2.6: Sampling with Class Guidance</h3>
+                    <p>Using classifier-free guidance with scale γ = 5, we generate 4 instances of each digit 0-9:</p>
+
+                    <div class="grid-3">
+                        <div class="image-container">
+                            <img src="2_6_epoch_1.png" alt="Epoch 1">
+                            <div class="image-label">Epoch 1</div>
+                        </div>
+                        <div class="image-container">
+                            <img src="2_6_epoch_5.png" alt="Epoch 5">
+                            <div class="image-label">Epoch 5</div>
+                        </div>
+                        <div class="image-container">
+                            <img src="2_6_epoch_10.png" alt="Epoch 10">
+                            <div class="image-label">Epoch 10</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Class-Guided Generation</h5>
+                        <p>Class conditioning dramatically improves generation quality. The model learns to generate digits that are clearly recognizable by their class, with consistent style within each digit type. Guidance helps enforce semantic consistency.</p>
+                    </div>
+
+                    <h4>Removing the Learning Rate Scheduler</h4>
+                    <p>We investigate whether the exponential LR scheduler is necessary for good performance:</p>
+
+                    <div class="card">
+                        <h4>Approach: Fixed Learning Rate Tuning</h4>
+                        <p><strong>Strategy:</strong> Replace exponential decay with a fixed, higher learning rate. We found that $\text{lr} = 2 \times 10^{-2}$ with 20 epochs achieves comparable convergence without scheduler overhead.</p>
+                        <p><strong>Finding:</strong> A constant learning rate of $2 \times 10^{-2}$ maintains competitive performance without exponential decay complexity.</p>
+                        <p><strong>Benefit:</strong> Simpler training code and fewer hyperparameters.</p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <img src="2_6_epoch_10.png" alt="With scheduler">
+                            <div class="comparison-label">With LR Scheduler (Original)</div>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="2_6_no_scheduler_epoch_20.png" alt="Without scheduler">
+                            <div class="comparison-label">Fixed LR = $2 \times 10^{-2}$ (No Scheduler)</div>
+                        </div>
+                    </div>
+
+                    <div class="reflection-box">
+                        <h5>Scheduler Removal Summary</h5>
+                        <p>A constant learning rate of $2 \times 10^{-2}$ trained for 20 epochs achieves comparable final performance without exponential decay. Properly tuned fixed rates work exceptionally well for MNIST flow matching.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONCLUSION -->
+            <section>
+                <h2>Conclusion</h2>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>🎯 Key Learnings</h4>
+                        <ul>
+                            <li>One-step denoising averages out to mode-seeking behavior (centroid)</li>
+                            <li>Iterative denoising with flow matching enables high-quality generation</li>
+                            <li>Time conditioning allows single network to handle all noise levels</li>
+                            <li>Class conditioning + guidance improves semantic control</li>
+                            <li>Architecture design and training duration significantly impact results</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>🔧 Technical Takeaways</h4>
+                        <ul>
+                            <li>UNet with skip connections preserve spatial information</li>
+                            <li>FCBlocks enable modulation across timestep/class dimensions</li>
+                            <li>Classifier-free guidance (10% unconditional dropout) is essential</li>
+                            <li>Sinusoidal embeddings > linear embeddings for temporal signals</li>
+                            <li>Proper learning rate tuning can replace scheduler complexity</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Flow Matching from Scratch | CS 280A | UC Berkeley</p>
+        </footer>
+    </div>
+</body>
+</html>
